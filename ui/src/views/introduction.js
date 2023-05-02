@@ -54,7 +54,9 @@ const Introduction = (props) => {
             </svg>
           </div>
         </div>
-        <span className="introduction-text">Aniruddha Mandal</span>
+        <Link to="/" className="introduction-navlink">
+          Aniruddha Mandal
+        </Link>
         <a
           href="https://www.linkedin.com/in/aniruddha-mandal-b81490188/"
           target="_blank"
@@ -64,12 +66,12 @@ const Introduction = (props) => {
           linkedIn
         </a>
         <a
-          href="https://medium.com/@anileo"
+          href="https://www.github.com/AniLeo-01"
           target="_blank"
           rel="noreferrer noopener"
           className="introduction-link1"
         >
-          medium
+          GitHub
         </a>
         <a
           href="https://www.instagram.com/ani_leo1/"
@@ -79,13 +81,13 @@ const Introduction = (props) => {
         >
           Instagram
         </a>
-        <Link to="/contact-me" className="introduction-navlink">
+        <Link to="/contact-me" className="introduction-navlink1">
           contact me
         </Link>
       </header>
       <div className="introduction-hero">
         <div className="introduction-container2">
-          <span className="introduction-text01">
+          <span className="introduction-text">
             <span>
               I love solving real-world problems through AI and helping
               companies understand their progress and standpoints through
@@ -101,7 +103,7 @@ const Introduction = (props) => {
                 }}
               />
             </span>
-            <span className="introduction-text06">Moksh.io</span>
+            <span className="introduction-text05">Moksh.io</span>
             <span>
               , helping to build their product, AskEcho. I have worked with
               several other companies like Faarms, Praxis Business School, and
@@ -145,13 +147,18 @@ const Introduction = (props) => {
           loading="eager"
           className="introduction-image1"
         />
-        <svg
-          viewBox="0 0 658.2857142857142 1024"
-          className="introduction-icon08"
-        >
-          <path d="M614.286 493.714c0 4.571-2.286 9.714-5.714 13.143l-266.286 266.286c-3.429 3.429-8.571 5.714-13.143 5.714s-9.714-2.286-13.143-5.714l-266.286-266.286c-3.429-3.429-5.714-8.571-5.714-13.143s2.286-9.714 5.714-13.143l28.571-28.571c3.429-3.429 8-5.714 13.143-5.714 4.571 0 9.714 2.286 13.143 5.714l224.571 224.571 224.571-224.571c3.429-3.429 8.571-5.714 13.143-5.714s9.714 2.286 13.143 5.714l28.571 28.571c3.429 3.429 5.714 8.571 5.714 13.143zM614.286 274.286c0 4.571-2.286 9.714-5.714 13.143l-266.286 266.286c-3.429 3.429-8.571 5.714-13.143 5.714s-9.714-2.286-13.143-5.714l-266.286-266.286c-3.429-3.429-5.714-8.571-5.714-13.143s2.286-9.714 5.714-13.143l28.571-28.571c3.429-3.429 8-5.714 13.143-5.714 4.571 0 9.714 2.286 13.143 5.714l224.571 224.571 224.571-224.571c3.429-3.429 8.571-5.714 13.143-5.714s9.714 2.286 13.143 5.714l28.571 28.571c3.429 3.429 5.714 8.571 5.714 13.143z"></path>
-        </svg>
       </div>
+      <Link to="/gallery1" className="introduction-navlink2">
+        <footer className="introduction-footer">
+          <span className="introduction-text14">Click to continue</span>
+          <svg
+            viewBox="0 0 658.2857142857142 1024"
+            className="introduction-icon08"
+          >
+            <path d="M614.286 493.714c0 4.571-2.286 9.714-5.714 13.143l-266.286 266.286c-3.429 3.429-8.571 5.714-13.143 5.714s-9.714-2.286-13.143-5.714l-266.286-266.286c-3.429-3.429-5.714-8.571-5.714-13.143s2.286-9.714 5.714-13.143l28.571-28.571c3.429-3.429 8-5.714 13.143-5.714 4.571 0 9.714 2.286 13.143 5.714l224.571 224.571 224.571-224.571c3.429-3.429 8.571-5.714 13.143-5.714s9.714 2.286 13.143 5.714l28.571 28.571c3.429 3.429 5.714 8.571 5.714 13.143zM614.286 274.286c0 4.571-2.286 9.714-5.714 13.143l-266.286 266.286c-3.429 3.429-8.571 5.714-13.143 5.714s-9.714-2.286-13.143-5.714l-266.286-266.286c-3.429-3.429-5.714-8.571-5.714-13.143s2.286-9.714 5.714-13.143l28.571-28.571c3.429-3.429 8-5.714 13.143-5.714 4.571 0 9.714 2.286 13.143 5.714l224.571 224.571 224.571-224.571c3.429-3.429 8.571-5.714 13.143-5.714s9.714 2.286 13.143 5.714l28.571 28.571c3.429 3.429 5.714 8.571 5.714 13.143z"></path>
+          </svg>
+        </footer>
+      </Link>
     </div>
   )
 }

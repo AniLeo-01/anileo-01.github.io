@@ -72,20 +72,25 @@
   width: var(--dl-size-size-xsmall);
   height: var(--dl-size-size-xsmall);
 }
-.contact-me-text {
+.contact-me-navlink {
   top: 41px;
   left: 48px;
   color: rgba(0, 0, 0, 0.81);
   position: absolute;
   font-size: 20px;
   font-style: normal;
+  transition: 0.3s;
   font-weight: 900;
   text-transform: capitalize;
+  text-decoration: none;
+}
+.contact-me-navlink:hover {
+  color: var(--dl-color-gray-900);
 }
 .contact-me-link {
   top: 41px;
   left: 652px;
-  color: #000000;
+  color: rgba(0, 0, 0, 0.81);
   position: absolute;
   font-size: 16px;
   font-style: normal;
@@ -127,7 +132,7 @@
 .contact-me-link2:hover {
   color: rgba(214, 212, 212, 0.49);
 }
-.contact-me-navlink {
+.contact-me-navlink1 {
   top: 41px;
   color: rgba(0, 0, 0, 0.73);
   right: var(--dl-space-space-twounits);
@@ -135,9 +140,13 @@
   font-size: 16px;
   align-self: center;
   font-style: normal;
+  transition: 0.3s;
   font-weight: 900;
   text-transform: lowercase;
   text-decoration: none;
+}
+.contact-me-navlink1:hover {
+  color: var(--dl-color-gray-900);
 }
 .contact-me-hero {
   width: 100%;
@@ -148,11 +157,12 @@
   min-height: 80vh;
   align-items: center;
   flex-direction: column;
+  padding-bottom: 48px;
   background-size: cover;
   justify-content: flex-end;
   background-image: url('https://images.unsplash.com/photo-1511140973288-19bf21d7e771?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDQ1fHxibGFja3xlbnwwfHx8fDE2ODI5NTU0MzI&ixlib=rb-4.0.3&w=1500');
 }
-.contact-me-text1 {
+.contact-me-text2 {
   top: 227px;
   left: 0px;
   color: var(--dl-color-gray-white);
@@ -214,7 +224,7 @@
   box-shadow: 2px 3px 5px 0px #d4d4d4;
   background-color: #ffffff;
 }
-.contact-me-text2 {
+.contact-me-text3 {
   top: 381px;
   left: 773px;
   color: var(--dl-color-gray-white);
@@ -233,6 +243,25 @@
   margin-top: var(--dl-space-space-twounits);
   background-color: #000000;
 }
+.contact-me-navlink2 {
+  display: contents;
+}
+.contact-me-icon08 {
+  fill: #D9D9D9;
+  left: 1553px;
+  width: var(--dl-size-size-small);
+  bottom: 48px;
+  height: var(--dl-size-size-small);
+  position: absolute;
+  transition: 0.3s;
+  text-decoration: none;
+}
+.contact-me-icon08:hover {
+  fill: var(--dl-color-gray-white);
+  box-shadow: 5px 5px 10px 0px #d4d4d4;
+  border-color: var(--dl-color-gray-developer);
+  border-width: 1px;
+}
 .contact-me-testimonial-card {
   display: flex;
   padding: var(--dl-space-space-twounits);
@@ -244,12 +273,12 @@
   flex-direction: column;
   justify-content: flex-start;
 }
-.contact-me-icon08 {
+.contact-me-icon10 {
   width: var(--dl-size-size-medium);
   flex-shrink: 0;
   margin-bottom: var(--dl-space-space-halfunit);
 }
-.contact-me-text3 {
+.contact-me-text4 {
   color: var(--dl-color-gray-500);
   font-size: 1.15rem;
   padding-top: var(--dl-space-space-threeunits);
@@ -283,13 +312,13 @@
   flex-direction: column;
   justify-content: space-between;
 }
-.contact-me-text4 {
+.contact-me-text5 {
   font-size: 24px;
   font-style: normal;
   font-weight: 600;
   margin-bottom: 0.25rem;
 }
-.contact-me-text5 {
+.contact-me-text6 {
   color: var(--dl-color-gray-500);
   font-size: 12px;
   font-style: normal;
@@ -303,7 +332,7 @@
   align-items: center;
   justify-content: center;
 }
-.contact-me-icon10 {
+.contact-me-icon12 {
   top: 30px;
   fill: #000000;
   left: 730px;
@@ -314,7 +343,7 @@
   margin-right: var(--dl-space-space-unit);
   padding-right: var(--dl-space-space-unit);
 }
-.contact-me-icon12 {
+.contact-me-icon14 {
   top: 30px;
   fill: #000000;
   left: 849px;
@@ -325,7 +354,7 @@
   margin-right: var(--dl-space-space-unit);
   padding-right: var(--dl-space-space-unit);
 }
-.contact-me-icon14 {
+.contact-me-icon16 {
   top: 30px;
   left: 966px;
   width: var(--dl-size-size-small);
@@ -335,7 +364,7 @@
   margin-right: var(--dl-space-space-unit);
   padding-right: var(--dl-space-space-unit);
 }
-.contact-me-icon16 {
+.contact-me-icon18 {
   top: 30px;
   left: 1087px;
   width: var(--dl-size-size-small);
@@ -345,7 +374,7 @@
   padding-right: var(--dl-space-space-unit);
 }
 @media(max-width: 991px) {
-  .contact-me-icon08 {
+  .contact-me-icon10 {
     height: var(--dl-size-size-medium);
   }
   .contact-me-profile {
