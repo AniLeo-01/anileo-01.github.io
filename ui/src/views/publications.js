@@ -10,8 +10,8 @@ const Publications = (props) => {
   return (
     <div className="publications-container">
       <Helmet>
-        <title>Publications - My Portfolio</title>
-        <meta property="og:title" content="Publications - My Portfolio" />
+        <title>Publications - Aniruddha Mandal</title>
+        <meta property="og:title" content="Publications - Aniruddha Mandal" />
       </Helmet>
       <header data-role="Header" className="publications-header">
         <div data-role="MobileMenu" className="publications-mobile-menu">

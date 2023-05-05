@@ -10,8 +10,8 @@ const Introduction = (props) => {
   return (
     <div className="introduction-container">
       <Helmet>
-        <title>Introduction - My Portfolio</title>
-        <meta property="og:title" content="Introduction - My Portfolio" />
+        <title>Introduction - Aniruddha Mandal</title>
+        <meta property="og:title" content="Introduction - Aniruddha Mandal" />
       </Helmet>
       <header data-role="Header" className="introduction-header">
         <div data-role="MobileMenu" className="introduction-mobile-menu">
@@ -144,11 +144,11 @@ const Introduction = (props) => {
         <img
           alt="image"
           src="/playground_assets/untitled-1-400h.png"
-          loading="eager"
+          loading="lazy"
           className="introduction-image1"
         />
       </div>
-      <Link to="/gallery1" className="introduction-navlink2">
+      <Link to="/experience_page1" className="introduction-navlink2">
         <footer className="introduction-footer">
           <span className="introduction-text14">Click to continue</span>
           <svg
