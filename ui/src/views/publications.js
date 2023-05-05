@@ -66,12 +66,12 @@ const Publications = (props) => {
           linkedIn
         </a>
         <a
-          href="https://medium.com/@anileo"
+          href="https://www.github.com/AniLeo-01"
           target="_blank"
           rel="noreferrer noopener"
           className="publications-link1"
         >
-          medium
+          GitHub
         </a>
         <a
           href="https://www.instagram.com/ani_leo1/"
