@@ -26,8 +26,8 @@
   a{color:inherit}
 
   /* ---------- fixed chrome ---------- */
-  #field{position:fixed;inset:0;z-index:0;pointer-events:none}
-  .grain{position:fixed;inset:-50%;z-index:1;pointer-events:none;opacity:.5;
+  #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+  .grain{position:fixed;inset:-20%;z-index:1;pointer-events:none;opacity:.5;will-change:transform;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.035 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
     animation:grain 900ms steps(4) infinite}
   @keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-2%,3%)}50%{transform:translate(3%,-2%)}75%{transform:translate(-3%,-3%)}100%{transform:translate(2%,2%)}}
@@ -37,25 +37,25 @@
   nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
     padding:20px clamp(20px,4vw,52px);mix-blend-mode:normal}
   .logo{font-family:var(--font-m);font-size:14px;letter-spacing:.14em;text-decoration:none;color:var(--ink);
-    border:1px solid var(--line);padding:8px 12px;border-radius:8px;background:rgba(6,7,12,.55);backdrop-filter:blur(10px)}
+    border:1px solid var(--line);padding:8px 12px;border-radius:8px;background:rgba(6,7,12,.85)}
   .logo b{color:var(--accent);transition:color .6s}
   .nav-links{display:flex;gap:26px;font-family:var(--font-m);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
-    background:rgba(6,7,12,.55);backdrop-filter:blur(10px);border:1px solid var(--line);padding:10px 20px;border-radius:99px}
+    background:rgba(6,7,12,.85);border:1px solid var(--line);padding:10px 20px;border-radius:99px}
   .nav-links a{text-decoration:none;color:var(--dim);transition:color .25s}
   .nav-links a:hover{color:var(--ink)}
   @media(max-width:760px){.nav-links{display:none}}
 
   /* mobile progress bar */
   #mbar{position:fixed;top:0;left:0;height:2px;width:100%;z-index:60;transform-origin:0 50%;transform:scaleX(0);
-    background:var(--accent);transition:background .6s;display:none}
+    background:var(--accent);display:none}
   @media(max-width:1020px){#mbar{display:block}}
 
   /* left rail */
   #rail{position:fixed;left:clamp(16px,2.6vw,40px);top:50%;transform:translateY(-50%);z-index:40;
     display:flex;flex-direction:column;gap:0;font-family:var(--font-m)}
   #rail .rline{position:absolute;left:5px;top:10px;bottom:10px;width:1px;background:var(--line)}
-  #rail .rfill{position:absolute;left:5px;top:10px;width:1px;height:0;background:var(--accent);transition:background .6s;
-    box-shadow:0 0 8px var(--accent)}
+  #rail .rfill{position:absolute;left:5px;top:10px;width:1px;height:calc(100% - 20px);background:var(--accent);
+    transform:scaleY(0);transform-origin:top;box-shadow:0 0 8px var(--accent)}
   .rstop{display:flex;align-items:center;gap:12px;padding:9px 0;text-decoration:none;position:relative}
   .rstop .dot{width:11px;height:11px;border-radius:50%;border:1px solid var(--faint);background:var(--bg);
     transition:all .35s;flex:none}
@@ -121,7 +121,7 @@
   .hm{font-family:var(--font-m)}
   .hm b{display:block;font-size:clamp(20px,2.4vw,30px);color:var(--ink);font-weight:500}
   .hm span{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
-  #heroviz{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.5;z-index:1;pointer-events:none}
+  #heroviz{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.5;z-index:1;pointer-events:none;overflow:hidden}
   #heroviz svg{width:min(92vw,1150px);height:auto;overflow:visible}
   .scroll-cue{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);font-family:var(--font-m);font-size:10px;
     letter-spacing:.3em;text-transform:uppercase;color:var(--faint);display:flex;flex-direction:column;align-items:center;gap:10px}
@@ -159,19 +159,24 @@
     .viz svg{max-height:66vh}
   }
   @media(max-width:1020px){
-    .stage{grid-template-columns:1fr;gap:8px;align-content:center;
-      padding:72px clamp(18px,5vw,40px) 24px}
+    /* mobile: sections flow naturally (no pinning), diagrams play on enter */
+    .layer{height:auto !important}
+    .stage{position:static;height:auto;overflow:visible;grid-template-columns:minmax(0,1fr);gap:10px;
+      align-content:start;padding:56px clamp(18px,5vw,40px) 40px}
+    #l0 .stage{min-height:94svh;align-content:center;padding-top:96px}
     .layer.flip .stage .viz{order:1}
     .layer.flip .stage .copy{order:2}
-    .viz svg{max-height:34svh}
+    .viz svg{max-height:none}   /* height cap transfers via aspect-ratio into track width -> overflow */
     .copy{max-width:100%}
     .copy h2{font-size:clamp(24px,6.5vw,34px);margin-bottom:12px}
     .copy p{font-size:13.5px;line-height:1.55;margin-bottom:14px}
     .eyebrow{margin-bottom:12px}
     .chips{margin-bottom:12px}
     .chips span{padding:5px 10px;font-size:10px}
+    .pubs a{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10.5px}
     .cta-row .btn{padding:11px 16px}
     #heroviz svg{width:130vw}
+    .scroll-cue{position:static;transform:none;margin-top:26px}
   }
   @media (prefers-reduced-motion:reduce){
     .grain,.scroll-cue::after{animation:none}
@@ -725,6 +730,7 @@ utils.set('#cnn-fc,#cnn-out,#cnn-pool,#g-query,#g-gen,#g-ans,#a-next,#ag-distill
   '#agents .agnode,#agents .aglink,#ag-msg,#wz .wnode,#wz .wedge,#wz-agent,#st .stagent,.cta-row .btn',{opacity:0});
 
 /* ─────────── scrub loop ─────────── */
+const amb={hero:[],tail:[]}; // looping ambients, paused when offscreen
 const layers=$$('.layer').map(sec=>({sec,tl:TL[sec.id],cur:0,accent:sec.dataset.accent}));
 const rstops=$$('.rstop'), rfill=$('#rfill'), mbar=$('#mbar'), root=document.documentElement;
 let accentNow=hex(layers[0].accent), accentTgt=accentNow;
@@ -735,32 +741,53 @@ function css([r,g,b]){return `rgb(${r|0},${g|0},${b|0})`}
 if(rm){
   layers.forEach(l=>l.tl&&l.tl.seek(l.tl.duration)); // static, fully-revealed page
 }else{
+  let lastActive=-1,lastP=-1,lastAccent='',heroOn=true,tailOn=true;
   const frame=()=>{
     const vh=innerHeight;let active=0;
+    // read phase: all rects first, so timeline writes never force reflows mid-loop
+    const rects=layers.map(l=>l.sec.getBoundingClientRect());
+    // write phase
     layers.forEach((l,i)=>{
-      const r=l.sec.getBoundingClientRect();
-      const t=clamp(-r.top/(r.height-vh),0,1);
+      const r=rects[i];
       if(r.top<vh*.5&&r.bottom>vh*.5)active=i;
-      l.cur+= (t-l.cur)*0.16;
-      if(Math.abs(t-l.cur)<.0006)l.cur=t;
-      if(l.tl&&l.cur!==l.prev){
-        l.prev=l.cur;
-        l.tl.seek(l.cur*l.tl.duration);
-      }
+      if(mobile)return;                               // mobile: play-on-enter, no scrub
+      const t=clamp(-r.top/(r.height-vh),0,1);
+      if(r.top>vh*1.5||r.bottom<-vh*.5)l.cur=t;      // offscreen: snap, no catch-up
+      else{l.cur+=(t-l.cur)*0.16;if(Math.abs(t-l.cur)<.0006)l.cur=t;}
+      if(l.tl&&l.cur!==l.prev){l.prev=l.cur;l.tl.seek(l.cur*l.tl.duration);}
     });
-    // rail + accent
-    rstops.forEach((s,i)=>s.classList.toggle('on',i===active));
+    if(active!==lastActive){
+      lastActive=active;
+      rstops.forEach((s,i)=>s.classList.toggle('on',i===active));
+    }
     const doc=document.documentElement;
     const p=doc.scrollTop/(doc.scrollHeight-vh);
-    rfill.style.height=(p*100*.92+4)+'%';
-    mbar.style.transform=`scaleX(${p})`;
+    if(Math.abs(p-lastP)>.0004){
+      lastP=p;
+      rfill.style.transform=`scaleY(${p*.92+.04})`;
+      mbar.style.transform=`scaleX(${p})`;
+    }
     accentTgt=hex(layers[active].accent);
     accentNow=accentNow.map((v,k)=>v+(accentTgt[k]-v)*0.07);
-    root.style.setProperty('--accent',css(accentNow));
-    layers[active].sec.style.setProperty('--acc',layers[active].accent);
+    const ac=css(accentNow);
+    if(ac!==lastAccent){lastAccent=ac;root.style.setProperty('--accent',ac);}
+    // pause looping ambients when their scenes are offscreen
+    const hv=rects[0].bottom>0;
+    if(hv!==heroOn){heroOn=hv;amb.hero.forEach(a=>hv?a.play():a.pause());}
+    const tv=rects[6].top<vh;
+    if(tv!==tailOn){tailOn=tv;amb.tail.forEach(a=>tv?a.play():a.pause());}
     requestAnimationFrame(frame);
   };
   requestAnimationFrame(frame);
+  if(mobile){
+    const io=new IntersectionObserver(es=>es.forEach(e=>{
+      if(!e.isIntersecting)return;
+      const l=layers.find(x=>x.sec===e.target);
+      if(l&&l.tl)l.tl.play();
+      io.unobserve(e.target);
+    }),{threshold:0.2});
+    layers.slice(1).forEach(l=>io.observe(l.sec));    // skip hero (its tl only fades it out)
+  }
 }
 
 /* per-section static accent var (for copy colors before first activation) */
@@ -779,39 +806,44 @@ layers.forEach(l=>l.sec.style.setProperty('--acc',l.accent));
   h1.textContent='';h1.appendChild(frag);
   if(!rm){
     animate('#hero-title .ch',{opacity:[0,1],translateY:['0.8em',0],rotate:[6,0],
-      delay:stagger(34,{from:'center'}),duration:900,ease:'outExpo'});
+      delay:stagger(34,{from:'center'}),duration:900,ease:'outExpo'})
+      .then(()=>$$('#hero-title .ch').forEach(c=>c.style.willChange='auto'));
     animate('.hero-eyebrow, .hero-sub, .hero-meta',{opacity:[0,1],translateY:[24,0],
       delay:stagger(140,{start:500}),duration:800,ease:'outCubic'});
     // ambient perceptron pulses
-    animate('#hv-pulses .hp',{
+    amb.hero.push(animate('#hv-pulses .hp',{
       cx:470,cy:280,opacity:[{to:1,duration:80},{to:0,duration:320}],
-      delay:stagger(190),duration:1400,loop:true,loopDelay:600,ease:'inOutSine'});
-    animate('#hv-node',{scale:[1,1.12,1],duration:1400,loop:true,loopDelay:600,ease:'inOutSine'});
-    animate('#hv-opulse',{cx:[504,1080],opacity:[{to:1,duration:100},{to:0,duration:500}],
-      duration:1400,loop:true,loopDelay:600,ease:'inOutSine',delay:700});
+      delay:stagger(190),duration:1400,loop:true,loopDelay:600,ease:'inOutSine'}));
+    amb.hero.push(animate('#hv-node',{scale:[1,1.12,1],duration:1400,loop:true,loopDelay:600,ease:'inOutSine'}));
+    amb.hero.push(animate('#hv-opulse',{cx:[504,1080],opacity:[{to:1,duration:100},{to:0,duration:500}],
+      duration:1400,loop:true,loopDelay:600,ease:'inOutSine',delay:700}));
     const sig=createDrawable('#hv-sig');
-    animate(sig,{draw:['0 0','0 1'],duration:1200,loop:true,loopDelay:800,ease:'inOutQuad'});
+    amb.hero.push(animate(sig,{draw:['0 0','0 1'],duration:1200,loop:true,loopDelay:800,ease:'inOutQuad'}));
     // L6 ambient orbit
-    animate('#st-orbit circle',{rotate:360,duration:40000,loop:true,ease:'linear'});
+    amb.tail.push(animate('#st-orbit circle',{rotate:360,duration:40000,loop:true,ease:'linear'}));
   }
 }
 
 /* ─────────── particle field ─────────── */
 if(!rm){
   const cv=$('#field'),cx=cv.getContext('2d');
+  const DPR=Math.min(devicePixelRatio||1,1.25);   // dots are soft; full retina is wasted here
   let W,H;const N=mobile?26:70;
   const P=Array.from({length:N},(_,i)=>({x:rnd(i)*1,y:rnd(i+50)*1,s:.3+rnd(i+9)*1.4,v:.00012+rnd(i+31)*.00028}));
-  const size=()=>{W=cv.width=innerWidth*devicePixelRatio;H=cv.height=innerHeight*devicePixelRatio};
+  const size=()=>{W=cv.width=innerWidth*DPR;H=cv.height=innerHeight*DPR};
   size();let lastW=innerWidth;
   addEventListener('resize',()=>{if(Math.abs(innerWidth-lastW)>1){lastW=innerWidth;size()}});
+  let skip=false;
   const draw=()=>{
-    cx.clearRect(0,0,W,H);
-    const [r,g,b]=accentNow;
-    for(const p of P){
-      p.y-=p.v;if(p.y<0)p.y+=1;
-      const px=p.x*W,py=p.y*H;
-      cx.beginPath();cx.arc(px,py,p.s*devicePixelRatio,0,7);
-      cx.fillStyle=`rgba(${r|0},${g|0},${b|0},${.05+p.s*.09})`;cx.fill();
+    skip=!skip;
+    if(!skip){                                     // 30fps is plenty for slow drift
+      cx.clearRect(0,0,W,H);
+      const [r,g,b]=accentNow;
+      for(const p of P){
+        p.y-=p.v;if(p.y<0)p.y+=1;
+        cx.beginPath();cx.arc(p.x*W,p.y*H,p.s*DPR,0,7);
+        cx.fillStyle=`rgba(${r|0},${g|0},${b|0},${.05+p.s*.09})`;cx.fill();
+      }
     }
     requestAnimationFrame(draw);
   };
