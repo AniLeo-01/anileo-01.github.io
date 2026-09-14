@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>The Backward Pass — Aniruddha Mandal</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='34' fill='none' stroke='%2360a5fa' stroke-width='8'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%2360a5fa'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="blog.css" />
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+
+<nav>
+  <a class="logo" href="index.html">AM<b>_</b></a>
+  <div class="nav-links">
+    <a href="index.html">Journey</a>
+    <a href="blog.html" class="active">Blog</a>
+    <a href="Aniruddha_Mandal_Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+    <a href="https://github.com/AniLeo-01" target="_blank" rel="noopener">GitHub</a>
+    <a href="index.html#l6">Contact</a>
+  </div>
+</nav>
+
+<main>
+  <a href="blog.html" class="back">← all posts</a>
+  <h1 id="postTitle">Loading…</h1>
+  <div class="meta" id="postMeta"></div>
+  <div class="prose" id="postBody"></div>
+</main>
+
+<footer>
+  <span>© 2026 Aniruddha Mandal · Bengaluru, IN</span>
+  <span><a href="blog.html">← the backward pass</a></span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@18.0.13/lib/marked.umd.js"
+        integrity="sha384-Jy8qDMspJASzATgFngF2ompIKy0StbCcvuTE65mxDm/E0/YSIF6Ndc+5V7bbwRcw"
+        crossorigin="anonymous"></script>
+<script>
+const slug=new URLSearchParams(location.search).get('p')||'';
+const title=document.getElementById('postTitle');
+const fmt=d=>new Date(d+'T00:00:00').toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+
+(async()=>{
+  const posts=await (await fetch('posts.json')).json();
+  const post=posts.find(p=>p.slug===slug);
+  if(!post){title.textContent='Post not found';return}
+
+  const md=await fetch(`blog/${post.slug}.md`);
+  if(!md.ok){title.textContent='Post not found';return}
+
+  document.title=`${post.title} — Aniruddha Mandal`;
+  title.textContent=post.title;
+  document.getElementById('postMeta').innerHTML=
+    `<time datetime="${post.date}">${fmt(post.date)}</time>`+
+    (post.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
+  document.getElementById('postBody').innerHTML=marked.parse(await md.text());
+
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    try{
+      const {animate,stagger}=await import('https://cdn.jsdelivr.net/npm/animejs@4/+esm');
+      animate('#postTitle, .meta, .prose',{opacity:[0,1],translateY:[18,0],delay:stagger(90),duration:600,ease:'outCubic'});
+    }catch(e){}
+  }
+})().catch(()=>{title.textContent='Could not load this post'});
+</script>
+</body>
+</html>

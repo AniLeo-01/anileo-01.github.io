@@ -1,442 +1,823 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aniruddha Mandal - ML Engineer</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Aniruddha Mandal — Forward Pass</title>
+<meta name="description" content="Aniruddha Mandal — ML engineer & AI architect. One scroll = one forward pass through a career in machine learning: CNNs, knowledge graphs, transformers, multi-agent runtimes, and the agentic web." />
+<meta property="og:title" content="Aniruddha Mandal — Forward Pass" />
+<meta property="og:description" content="A portfolio you scroll like a forward pass: CNN → GNN → Transformer → Agents. Engineering agentic infra at WebZero, founding SocialTokn." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='34' fill='none' stroke='%2360a5fa' stroke-width='8'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%2360a5fa'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#06070c; --bg2:#0a0c14; --ink:#e8eaf2; --dim:#8b90a3; --faint:#3a3f52;
+    --accent:#7dd3fc; --line:rgba(255,255,255,.07);
+    --font-d:'Space Grotesk',sans-serif; --font-b:'Inter',sans-serif; --font-m:'JetBrains Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font-b);overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;line-height:1.6}
+  ::selection{background:var(--accent);color:#06070c}
+  a{color:inherit}
+
+  /* ---------- fixed chrome ---------- */
+  #field{position:fixed;inset:0;z-index:0;pointer-events:none}
+  .grain{position:fixed;inset:-50%;z-index:1;pointer-events:none;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.035 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain 900ms steps(4) infinite}
+  @keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-2%,3%)}50%{transform:translate(3%,-2%)}75%{transform:translate(-3%,-3%)}100%{transform:translate(2%,2%)}}
+  .vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(ellipse 120% 90% at 50% 45%,transparent 55%,rgba(3,4,8,.55) 100%)}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+    padding:20px clamp(20px,4vw,52px);mix-blend-mode:normal}
+  .logo{font-family:var(--font-m);font-size:14px;letter-spacing:.14em;text-decoration:none;color:var(--ink);
+    border:1px solid var(--line);padding:8px 12px;border-radius:8px;background:rgba(6,7,12,.55);backdrop-filter:blur(10px)}
+  .logo b{color:var(--accent);transition:color .6s}
+  .nav-links{display:flex;gap:26px;font-family:var(--font-m);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    background:rgba(6,7,12,.55);backdrop-filter:blur(10px);border:1px solid var(--line);padding:10px 20px;border-radius:99px}
+  .nav-links a{text-decoration:none;color:var(--dim);transition:color .25s}
+  .nav-links a:hover{color:var(--ink)}
+  @media(max-width:760px){.nav-links{display:none}}
+
+  /* mobile progress bar */
+  #mbar{position:fixed;top:0;left:0;height:2px;width:100%;z-index:60;transform-origin:0 50%;transform:scaleX(0);
+    background:var(--accent);transition:background .6s;display:none}
+  @media(max-width:1020px){#mbar{display:block}}
+
+  /* left rail */
+  #rail{position:fixed;left:clamp(16px,2.6vw,40px);top:50%;transform:translateY(-50%);z-index:40;
+    display:flex;flex-direction:column;gap:0;font-family:var(--font-m)}
+  #rail .rline{position:absolute;left:5px;top:10px;bottom:10px;width:1px;background:var(--line)}
+  #rail .rfill{position:absolute;left:5px;top:10px;width:1px;height:0;background:var(--accent);transition:background .6s;
+    box-shadow:0 0 8px var(--accent)}
+  .rstop{display:flex;align-items:center;gap:12px;padding:9px 0;text-decoration:none;position:relative}
+  .rstop .dot{width:11px;height:11px;border-radius:50%;border:1px solid var(--faint);background:var(--bg);
+    transition:all .35s;flex:none}
+  .rstop .lbl{font-size:10px;letter-spacing:.12em;color:var(--faint);text-transform:uppercase;transition:color .35s;
+    opacity:0;transform:translateX(-6px)}
+  .rstop:hover .lbl{opacity:1;transform:none;color:var(--dim)}
+  .rstop.on .dot{border-color:var(--accent);background:var(--accent);box-shadow:0 0 10px var(--accent)}
+  .rstop.on .lbl{opacity:1;transform:none;color:var(--ink)}
+  @media(max-width:1280px){.rstop .lbl{display:none}}
+  @media(max-width:1020px){#rail{display:none}}
+
+  /* ---------- layers ---------- */
+  main{position:relative;z-index:2}
+  .layer{position:relative}
+  .stage{position:sticky;top:0;height:100vh;height:100svh;display:grid;
+    grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:clamp(20px,4vw,70px);align-items:center;
+    padding:0 clamp(20px,5vw,80px) 0 clamp(96px,9vw,150px);overflow:hidden}
+  @media(min-width:1281px){.stage{padding-left:clamp(195px,14vw,245px)}}
+  .layer.flip .stage .viz{order:2}
+  .layer.flip .stage .copy{order:1}
+  .viz{width:100%;min-width:0}
+  .viz svg{width:100%;height:auto;max-height:74vh;display:block;overflow:visible}
+
+  .copy{max-width:520px}
+  .eyebrow{font-family:var(--font-m);font-size:clamp(10px,1.05vw,12.5px);letter-spacing:.22em;text-transform:uppercase;
+    color:var(--acc,var(--accent));margin-bottom:18px;display:flex;align-items:center;gap:10px}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--acc,var(--accent));display:inline-block}
+  .copy h2{font-family:var(--font-d);font-weight:500;font-size:clamp(30px,3.6vw,54px);line-height:1.06;
+    letter-spacing:-.02em;margin-bottom:20px}
+  .copy h2 em{font-style:normal;color:var(--acc,var(--accent))}
+  .copy p{color:var(--dim);font-size:clamp(14.5px,1.15vw,16.5px);margin-bottom:22px}
+  .copy p strong{color:var(--ink);font-weight:600}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+  .chips span{font-family:var(--font-m);font-size:11px;letter-spacing:.06em;color:var(--dim);
+    border:1px solid var(--line);border-radius:99px;padding:6px 12px;background:rgba(255,255,255,.02)}
+  .stat{font-family:var(--font-m);font-size:12px;color:var(--acc,var(--accent));letter-spacing:.08em}
+  .copy p a{color:var(--ink);text-decoration:none;border-bottom:1px dotted var(--faint);transition:border-color .25s}
+  .copy p a:hover{border-bottom:1px solid var(--acc,var(--accent))}
+  .pubs{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+  .pubs a{font-family:var(--font-m);font-size:11.5px;letter-spacing:.04em;color:var(--dim);
+    text-decoration:none;line-height:1.5;transition:color .25s}
+  .pubs a::before{content:"↗ ";color:var(--acc,var(--accent))}
+  .pubs a:hover{color:var(--ink)}
+  .pubs a span{color:var(--faint)}
+  .copy .go{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-family:var(--font-m);font-size:12px;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--acc,var(--accent));
+    padding-bottom:4px;transition:gap .25s}
+  .copy .go:hover{gap:14px}
+
+  /* hero */
+  #l0 .stage{grid-template-columns:1fr;place-items:center;text-align:center;padding-left:clamp(20px,5vw,80px)}
+  .hero-inner{position:relative;z-index:3;max-width:1000px}
+  .hero-eyebrow{font-family:var(--font-m);font-size:clamp(10px,1.2vw,13px);letter-spacing:.28em;color:var(--accent);
+    text-transform:uppercase;margin-bottom:26px}
+  h1{font-family:var(--font-d);font-weight:700;font-size:clamp(44px,9.2vw,124px);line-height:.98;letter-spacing:-.03em;
+    text-transform:uppercase}
+  h1 .wd{display:inline-block;white-space:nowrap}
+  h1 .ch{display:inline-block;will-change:transform,opacity}
+  h1 .sp{display:inline-block;width:.35em}
+  .hero-sub{color:var(--dim);font-size:clamp(15px,1.4vw,18.5px);max-width:640px;margin:30px auto 0}
+  .hero-sub strong{color:var(--ink)}
+  .hero-meta{margin-top:34px;display:flex;gap:clamp(18px,4vw,56px);justify-content:center;flex-wrap:wrap}
+  .hm{font-family:var(--font-m)}
+  .hm b{display:block;font-size:clamp(20px,2.4vw,30px);color:var(--ink);font-weight:500}
+  .hm span{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  #heroviz{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.5;z-index:1;pointer-events:none}
+  #heroviz svg{width:min(92vw,1150px);height:auto;overflow:visible}
+  .scroll-cue{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);font-family:var(--font-m);font-size:10px;
+    letter-spacing:.3em;text-transform:uppercase;color:var(--faint);display:flex;flex-direction:column;align-items:center;gap:10px}
+  .scroll-cue::after{content:"";width:1px;height:44px;background:linear-gradient(var(--accent),transparent);
+    animation:cue 1.8s ease-in-out infinite}
+  @keyframes cue{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  /* svg text + shared viz styles */
+  text{font-family:var(--font-m)}
+  .tsm{font-size:10px;letter-spacing:.08em;fill:var(--dim)}
+  .txs{font-size:8.5px;letter-spacing:.1em;fill:var(--faint)}
+  .tacc{fill:var(--acc,var(--accent))}
+  /* scale/rotate pivots on the element itself, not the svg canvas */
+  .cfm,.cpl,.gnode,.agnode,.wnode,.stagent,.atok,#ag-core,#d-big,#d-small,#hv-node,#st-orbit circle,.wbar{
+    transform-box:fill-box;transform-origin:center}
+  .wbar{transform-origin:left center}
+
+  /* CTA / output */
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+  .btn{font-family:var(--font-m);font-size:12px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
+    padding:13px 22px;border-radius:10px;border:1px solid var(--line);color:var(--dim);transition:all .25s;background:rgba(255,255,255,.02)}
+  .btn:hover{color:var(--ink);border-color:var(--acc,var(--accent));transform:translateY(-2px)}
+  .btn.primary{background:var(--acc,var(--accent));color:#06070c;border-color:transparent;font-weight:500}
+  .btn.primary:hover{filter:brightness(1.12);color:#06070c}
+
+  footer{position:relative;z-index:2;padding:34px clamp(20px,5vw,80px);display:flex;justify-content:space-between;
+    flex-wrap:wrap;gap:12px;border-top:1px solid var(--line);font-family:var(--font-m);font-size:11px;
+    letter-spacing:.1em;color:var(--faint);background:var(--bg)}
+  footer a{color:var(--dim);text-decoration:none}
+  footer a:hover{color:var(--ink)}
+
+  @media(min-width:1021px) and (max-height:780px){
+    .copy h2{font-size:clamp(24px,3vw,40px)}
+    .copy p{font-size:14px;margin-bottom:16px}
+    .viz svg{max-height:66vh}
+  }
+  @media(max-width:1020px){
+    .stage{grid-template-columns:1fr;gap:8px;align-content:center;
+      padding:72px clamp(18px,5vw,40px) 24px}
+    .layer.flip .stage .viz{order:1}
+    .layer.flip .stage .copy{order:2}
+    .viz svg{max-height:34svh}
+    .copy{max-width:100%}
+    .copy h2{font-size:clamp(24px,6.5vw,34px);margin-bottom:12px}
+    .copy p{font-size:13.5px;line-height:1.55;margin-bottom:14px}
+    .eyebrow{margin-bottom:12px}
+    .chips{margin-bottom:12px}
+    .chips span{padding:5px 10px;font-size:10px}
+    .cta-row .btn{padding:11px 16px}
+    #heroviz svg{width:130vw}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .grain,.scroll-cue::after{animation:none}
+    html{scroll-behavior:auto}
+  }
+</style>
 </head>
 <body>
-  <!-- Cursor glow effect -->
-  <div class="cursor-glow" id="cursorGlow"></div>
 
-  <!-- Navigation -->
-  <nav class="nav" id="nav">
-    <div class="nav-inner">
-      <a href="#hero" class="nav-logo">AM</a>
-      <div class="nav-links">
-        <a href="#experience">Experience</a>
-        <a href="#skills">Skills</a>
-        <a href="#projects">Projects</a>
-        <a href="#education">Education</a>
-        <a href="#contact">Contact</a>
-      </div>
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </button>
+<canvas id="field" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<div id="mbar" aria-hidden="true"></div>
+
+<nav>
+  <a class="logo" href="#l0">AM<b>_</b></a>
+  <div class="nav-links">
+    <a href="blog.html">Blog</a>
+    <a href="Aniruddha_Mandal_Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+    <a href="https://github.com/AniLeo-01" target="_blank" rel="noopener">GitHub</a>
+    <a href="#l6">Contact</a>
+  </div>
+</nav>
+
+<div id="rail" aria-label="Layer navigation">
+  <div class="rline"></div><div class="rfill" id="rfill"></div>
+  <a class="rstop" href="#l0"><span class="dot"></span><span class="lbl">L0 · Input</span></a>
+  <a class="rstop" href="#l1"><span class="dot"></span><span class="lbl">L1 · Conv2D</span></a>
+  <a class="rstop" href="#l2"><span class="dot"></span><span class="lbl">L2 · Graph</span></a>
+  <a class="rstop" href="#l3"><span class="dot"></span><span class="lbl">L3 · Attention</span></a>
+  <a class="rstop" href="#l4"><span class="dot"></span><span class="lbl">L4 · Agents</span></a>
+  <a class="rstop" href="#l5"><span class="dot"></span><span class="lbl">L5 · WebZero</span></a>
+  <a class="rstop" href="#l6"><span class="dot"></span><span class="lbl">L6 · Output</span></a>
+</div>
+
+<main>
+
+<!-- ═══════════ L0 · INPUT — hero / perceptron ═══════════ -->
+<section class="layer" id="l0" data-accent="#7dd3fc" style="height:180vh">
+  <div class="stage">
+    <div id="heroviz" aria-hidden="true">
+      <svg viewBox="0 0 1100 560" fill="none">
+        <g id="hv-in" stroke="#7dd3fc" stroke-opacity=".28">
+          <line x1="60"  y1="120" x2="470" y2="280"/>
+          <line x1="40"  y1="210" x2="470" y2="280"/>
+          <line x1="30"  y1="280" x2="470" y2="280"/>
+          <line x1="40"  y1="350" x2="470" y2="280"/>
+          <line x1="60"  y1="440" x2="470" y2="280"/>
+        </g>
+        <g fill="#7dd3fc" fill-opacity=".5">
+          <circle cx="60" cy="120" r="5"/><circle cx="40" cy="210" r="5"/><circle cx="30" cy="280" r="5"/>
+          <circle cx="40" cy="350" r="5"/><circle cx="60" cy="440" r="5"/>
+        </g>
+        <g id="hv-pulses" fill="#e8eaf2">
+          <circle class="hp" cx="60" cy="120" r="3.2"/><circle class="hp" cx="40" cy="210" r="3.2"/>
+          <circle class="hp" cx="30" cy="280" r="3.2"/><circle class="hp" cx="40" cy="350" r="3.2"/>
+          <circle class="hp" cx="60" cy="440" r="3.2"/>
+        </g>
+        <circle id="hv-node" cx="470" cy="280" r="34" stroke="#7dd3fc" stroke-width="1.5" fill="rgba(125,211,252,.06)"/>
+        <path id="hv-sig" d="M448 292 C 462 292 462 268 492 268" stroke="#e8eaf2" stroke-width="1.6"/>
+        <line id="hv-out" x1="504" y1="280" x2="1080" y2="280" stroke="#7dd3fc" stroke-opacity=".35"/>
+        <circle id="hv-opulse" cx="504" cy="280" r="4" fill="#7dd3fc"/>
+        <text class="txs" x="530" y="268">ŷ = σ(Wx + b)</text>
+      </svg>
     </div>
-    <!-- Mobile menu -->
-    <div class="mobile-menu" id="mobileMenu">
-      <a href="#experience">Experience</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-      <a href="#education">Education</a>
-      <a href="#contact">Contact</a>
-    </div>
-  </nav>
-
-  <!-- Hero -->
-  <section class="hero" id="hero">
-    <div class="hero-content">
-      <div class="hero-badge reveal">ML Engineer & AI Architect</div>
-      <h1 class="hero-title reveal">
-        <span class="line">Hi, I'm</span>
-        <span class="line accent-text">Aniruddha Mandal</span>
-      </h1>
-      <p class="hero-subtitle reveal">
-        I build intelligent systems - from multi-agent AI runtimes to fine-tuned LLMs -
-        turning complex ML research into production-grade software.
-      </p>
-      <div class="hero-cta reveal">
-        <a href="#experience" class="btn btn-primary">View My Work</a>
-        <a href="#contact" class="btn btn-outline">Get In Touch</a>
-      </div>
-      <div class="hero-stats reveal">
-        <div class="stat">
-          <span class="stat-number" data-count="10">0</span><span class="stat-plus">+</span>
-          <span class="stat-label">AI Agents Built</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number" data-count="6">0</span>
-          <span class="stat-label">Companies</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number" data-count="3">0</span><span class="stat-plus">+</span>
-          <span class="stat-label">Years Experience</span>
-        </div>
-      </div>
-    </div>
-    <div class="hero-scroll">
-      <div class="scroll-line"></div>
-    </div>
-  </section>
-
-  <!-- Experience -->
-  <section class="section" id="experience">
-    <div class="container">
-      <h2 class="section-title reveal">
-        <span class="section-number">01</span>
-        Experience
-      </h2>
-
-      <div class="timeline">
-        <!-- Sol Foundry -->
-        <div class="timeline-item reveal">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-header">
-              <div>
-                <h3>Founding ML Engineer</h3>
-                <p class="company"><a href="https://hellosol.app" target="_blank" rel="noopener" class="company-link">Sol Foundry</a> <span class="location">· Bangalore, India</span></p>
-              </div>
-              <span class="date">Jan 2026 - Present</span>
-            </div>
-            <ul class="timeline-list">
-              <li>Architected <strong>Cerebro</strong>, a multi-agent AI runtime with 10+ specialized LLM agents for message classification, callout extraction, enrichment, and lifecycle management.</li>
-              <li>Designed sequential context-grounded callout extraction pipeline with entity relationship graphs and entity resolution - eliminating output fluctuation.</li>
-              <li>Built real-time enrichment and batch onboarding flows through multi-stage LLM pipelines with <strong>Cerebras inference</strong>, LangSmith tracing, and dynamic prompt management.</li>
-              <li>Built production evaluation framework with <strong>27 graders</strong> across 5 agent types, automated Slack alerting, daily quality dashboards, and CI quality gates.</li>
-              <li>Designed end-to-end SLM fine-tuning pipeline (QLoRA on LiquidAI LFM2.5-1.2B), reducing classification latency from 2.1s to <strong>&lt;200ms</strong> and inference costs by <strong>~15x</strong>.</li>
-              <li>Fine-tuned DistilBERT classifiers achieving <strong>87.2% accuracy</strong> for multilingual message scoring (English, Hindi, Kannada, Telugu, Tamil, Spanish).</li>
-            </ul>
-            <div class="timeline-tags">
-              <span>LangChain</span><span>Cerebras</span><span>QLoRA</span><span>LangSmith</span><span>Neo4j</span><span>FastAPI</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Vibe AI -->
-        <div class="timeline-item reveal">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-header">
-              <div>
-                <h3>Founding AI Lead</h3>
-                <p class="company"><a href="https://www.myvibe.chat/" target="_blank" rel="noopener" class="company-link">Vibe AI</a> <span class="location">· Bangalore, India</span></p>
-              </div>
-              <span class="date">Mar 2025 - Dec 2025</span>
-            </div>
-            <ul class="timeline-list">
-              <li>Created synthetic dataset of <strong>65,356 records</strong> for emotional and empathy understanding using 3 different LLMs.</li>
-              <li>Trained and developed the world's <strong>15th best</strong> AI conversational model on EQBench3.</li>
-              <li>Led research and engineering team of 3 founding engineers and psychologists.</li>
-              <li>Developed v1 and v2 conversational agent algorithms and engineered external agents.</li>
-              <li>Built foundation behavioral model for user personalization.</li>
-            </ul>
-            <div class="timeline-tags">
-              <span>PyTorch</span><span>HuggingFace</span><span>vLLM</span><span>Model Quantization</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Maura.ai -->
-        <div class="timeline-item reveal">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-header">
-              <div>
-                <h3>AI Engineer</h3>
-                <p class="company"><a href="https://maura.ai/" target="_blank" rel="noopener" class="company-link">Maura.ai</a> <span class="location">· San Francisco, US</span></p>
-              </div>
-              <span class="date">Aug 2024 - Jan 2025</span>
-            </div>
-            <ul class="timeline-list">
-              <li>Created novel architecture for <strong>real-time GraphRAG</strong> with contextual updation using OpenAI GPT-4o and Neo4j.</li>
-              <li>Integrated 10+ core AI functionalities and added Slack API support for AI bot creation.</li>
-            </ul>
-            <div class="timeline-tags">
-              <span>GraphRAG</span><span>GPT-4o</span><span>Neo4j</span><span>Slack API</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Healtether -->
-        <div class="timeline-item reveal">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-header">
-              <div>
-                <h3>Senior AI Engineer</h3>
-                <p class="company"><a href="http://www.healtether.com" target="_blank" rel="noopener" class="company-link">Healtether Health</a> <span class="location">· Chennai, India</span></p>
-              </div>
-              <span class="date">Mar 2024 - Aug 2024</span>
-            </div>
-            <ul class="timeline-list">
-              <li>Developed AI backend and <strong>Hybrid RAG architecture</strong> for clinical diagnostic system.</li>
-              <li>Created one of India's novel disease-symptom mapping graphs using patient records from <strong>20+ hospitals</strong>.</li>
-              <li>Led a team of 5 AI engineers to fine-tune clinical models and develop the AI backend.</li>
-            </ul>
-            <div class="timeline-tags">
-              <span>RAG</span><span>Neo4j</span><span>FastAPI</span><span>Clinical AI</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- LegalGraph -->
-        <div class="timeline-item reveal">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-header">
-              <div>
-                <h3>ML Engineer</h3>
-                <p class="company"><a href="http://LegalGraph.ai" target="_blank" rel="noopener" class="company-link">LegalGraph.ai</a> <span class="location">· Mountain View, US</span></p>
-              </div>
-              <span class="date">Aug 2023 - Oct 2023</span>
-            </div>
-            <ul class="timeline-list">
-              <li>Built foundation model for LLM pipeline and integrated knowledge graphs to parse legal contracts.</li>
-              <li>Implemented Retrieval-Augmented Generation (RAG) techniques for legal query answering.</li>
-            </ul>
-            <div class="timeline-tags">
-              <span>RAG</span><span>Knowledge Graphs</span><span>NLP</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Echo / Spreetail -->
-        <div class="timeline-item reveal">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-header">
-              <div>
-                <h3>Data Science Intern</h3>
-                <p class="company"><a href="https://www.spreetail.com/" target="_blank" rel="noopener" class="company-link">Echo</a> <span class="acquired">(acquired by Spreetail)</span> <span class="location">· Bengaluru, India</span></p>
-              </div>
-              <span class="date">Apr 2023 - Jul 2023</span>
-            </div>
-            <ul class="timeline-list">
-              <li>Built 3 scrapers for Amazon, Nykaa, and Flipkart with automated pipeline in DataBricks.</li>
-              <li>Designed backend system in Django, Python, and SQL for product analysis dashboard.</li>
-            </ul>
-            <div class="timeline-tags">
-              <span>Django</span><span>DataBricks</span><span>SQL</span><span>Web Scraping</span>
-            </div>
-          </div>
-        </div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow" id="hero-eyebrow">x = [ curiosity, data, grit ] · forward( )</div>
+      <h1 id="hero-title" aria-label="Aniruddha Mandal">ANIRUDDHA MANDAL</h1>
+      <p class="hero-sub">The Data MacGyver. I turn ML research into production systems — fine-tuned LLMs,
+        knowledge graphs, multi-agent runtimes. Now <strong>engineering agentic infrastructure at WebZero</strong>
+        and <strong>founding SocialTokn</strong>. Scroll to run the forward pass.</p>
+      <div class="hero-meta">
+        <div class="hm"><b>7</b><span>AI companies</span></div>
+        <div class="hm"><b>10+</b><span>agents in production</span></div>
+        <div class="hm"><b>#15</b><span>EQBench3 · world</span></div>
+        <div class="hm"><b>179</b><span>sites benchmarked</span></div>
       </div>
     </div>
-  </section>
+    <div class="scroll-cue">scroll = forward pass</div>
+  </div>
+</section>
 
-  <!-- Skills -->
-  <section class="section section-alt" id="skills">
-    <div class="container">
-      <h2 class="section-title reveal">
-        <span class="section-number">02</span>
-        Skills
-      </h2>
-
-      <div class="skills-grid">
-        <div class="skill-card reveal">
-          <div class="skill-icon">&#x2728;</div>
-          <h3>Languages</h3>
-          <div class="skill-tags">
-            <span>Python</span><span>C/C++</span><span>R</span><span>Go</span>
-          </div>
-        </div>
-
-        <div class="skill-card reveal">
-          <div class="skill-icon">&#x26A1;</div>
-          <h3>Backend & Databases</h3>
-          <div class="skill-tags">
-            <span>FastAPI</span><span>Django</span><span>PostgreSQL</span><span>MongoDB</span><span>Neo4j</span><span>ScyllaDB</span><span>ChromaDB</span><span>Weaviate</span><span>Pinecone</span>
-          </div>
-        </div>
-
-        <div class="skill-card reveal">
-          <div class="skill-icon">&#x1F9E0;</div>
-          <h3>ML & AI</h3>
-          <div class="skill-tags">
-            <span>TensorFlow</span><span>PyTorch</span><span>LangChain</span><span>HuggingFace</span><span>vLLM</span><span>Keras</span><span>JAX</span><span>Scikit-Learn</span><span>smolagents</span><span>LangGraph</span><span>OpenAI Agent SDK</span><span>trl</span><span>PEFT/LoRA</span>
-          </div>
-        </div>
-
-        <div class="skill-card reveal">
-          <div class="skill-icon">&#x2601;</div>
-          <h3>Cloud & DevOps</h3>
-          <div class="skill-tags">
-            <span>AWS</span><span>BigQuery</span><span>Terraform</span><span>Databricks</span><span>Docker</span><span>Kubernetes</span><span>GitHub Actions</span>
-          </div>
-        </div>
-
-        <div class="skill-card reveal">
-          <div class="skill-icon">&#x1F50D;</div>
-          <h3>LLM Ops & Evaluation</h3>
-          <div class="skill-tags">
-            <span>LangSmith</span><span>Cerebras</span><span>QLoRA Fine-tuning</span><span>AWQ/GPTQ/GGUF</span><span>Prompt Engineering</span><span>llama.cpp</span>
-          </div>
-        </div>
+<!-- ═══════════ L1 · CONV2D — foundations ═══════════ -->
+<section class="layer" id="l1" data-accent="#22d3ee" style="height:230vh">
+  <div class="stage">
+    <div class="viz">
+      <svg id="cnn" viewBox="0 0 900 520" fill="none" aria-label="Animated convolutional neural network diagram">
+        <text class="txs" x="40" y="70">input · 10×10</text>
+        <g id="cnn-in"></g>
+        <rect id="kernel" x="40" y="90" width="84" height="84" stroke="#22d3ee" stroke-width="2" fill="rgba(34,211,238,.12)" rx="3"/>
+        <text class="txs" x="40" y="430">kernel 3×3 · stride 1</text>
+        <text class="txs" x="410" y="112">feature map</text>
+        <g id="cnn-fm"></g>
+        <text class="txs" x="628" y="152">maxpool</text>
+        <g id="cnn-pool"></g>
+        <g id="cnn-fc" stroke="#22d3ee" stroke-opacity=".3">
+          <line x1="758" y1="205" x2="800" y2="150"/><line x1="758" y1="205" x2="800" y2="215"/><line x1="758" y1="205" x2="800" y2="280"/>
+        </g>
+        <g id="cnn-out">
+          <rect x="800" y="138" width="4" height="24" rx="2" fill="#22d3ee"/>
+          <rect x="800" y="203" width="4" height="24" rx="2" fill="#22d3ee" opacity=".35"/>
+          <rect x="800" y="268" width="4" height="24" rx="2" fill="#22d3ee" opacity=".35"/>
+          <text class="tsm" x="814" y="155" id="c-out1">engineer ·0.97</text>
+          <text class="txs" x="814" y="220">artist ·0.02</text>
+          <text class="txs" x="814" y="285">other ·0.01</text>
+        </g>
+      </svg>
+    </div>
+    <div class="copy">
+      <div class="eyebrow">Layer 01 · Conv2D — 2019 → 2023</div>
+      <h2>Learning to <em>see patterns.</em></h2>
+      <p>B.Tech in CS with Data Analytics at The Neotia University — <strong>9.0 GPA (gold medallist)</strong> and
+        <strong>3rd place in Amazon's ML Challenge 2021</strong>. First production reps at <a href="https://www.spreetail.com/" target="_blank" rel="noopener">Echo</a>
+        (later acquired by Spreetail): marketplace scrapers and automated review pipelines in Databricks and PySpark.
+        Volunteered with <a href="https://www.omdena.com" target="_blank" rel="noopener">Omdena</a>, building
+        car-damage segmentation models so MyCover.ai could insure vehicles more effectively.
+        Like a convolution, one small kernel — curiosity — swept over everything.</p>
+      <div class="chips"><span>Python</span><span>TensorFlow</span><span>Databricks</span><span>Django</span><span>SQL</span></div>
+      <div class="stat">▸ GPA 9.0/10 · Amazon ML Challenge #3</div>
+      <div class="pubs">
+        <a href="https://doi.org/10.1007/978-3-031-24848-1_22" target="_blank" rel="noopener">Impact of Non-Academic Parameters on Academic Performance <span>· Springer, rough set theory</span></a>
+        <a href="https://doi.org/10.4018/978-1-7998-4706-9.ch006" target="_blank" rel="noopener">A Decadal Walk on BCI Technology <span>· IGI Global, BCI × ML</span></a>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Projects -->
-  <section class="section" id="projects">
-    <div class="container">
-      <h2 class="section-title reveal">
-        <span class="section-number">03</span>
-        Projects & Publications
-      </h2>
+<!-- ═══════════ L2 · MESSAGE PASSING — graph years ═══════════ -->
+<section class="layer flip" id="l2" data-accent="#a78bfa" style="height:230vh">
+  <div class="stage">
+    <div class="viz">
+      <svg id="gnn" viewBox="0 0 900 540" fill="none" aria-label="Animated knowledge graph with retrieval">
+        <g id="g-edges" stroke="#a78bfa" stroke-opacity=".35"></g>
+        <g id="g-beams" stroke="#a78bfa" stroke-width="2"></g>
+        <g id="g-nodes"></g>
+        <g id="g-pulses" fill="#e8eaf2"></g>
+        <g id="g-query">
+          <circle cx="640" cy="452" r="16" stroke="#e8eaf2" stroke-width="1.5" fill="rgba(232,234,242,.07)"/>
+          <text class="tsm" x="664" y="457" fill="#e8eaf2">query</text>
+        </g>
+        <g id="g-gen">
+          <rect x="742" y="418" width="130" height="68" rx="12" stroke="#a78bfa" stroke-width="1.5" fill="rgba(167,139,250,.07)"/>
+          <text class="tsm tacc" x="762" y="448">generate</text>
+          <text class="txs" x="762" y="466" id="g-ans">▮</text>
+        </g>
+        <text class="txs" x="40" y="46">h⁽ᵏ⁺¹⁾ = φ( h⁽ᵏ⁾, ⊕ msg(neighbours) )</text>
+      </svg>
+    </div>
+    <div class="copy">
+      <div class="eyebrow">Layer 02 · Message passing — 2023 → 2024</div>
+      <h2>Everything is <em>connected.</em></h2>
+      <p>Three companies, one obsession: <strong>knowledge graphs</strong>. Parsed legal contracts into Neo4j
+        for causal reasoning at <a href="http://LegalGraph.ai" target="_blank" rel="noopener">LegalGraph.ai</a>, built one of India's first <strong>disease–symptom graphs</strong> for
+        prediction of differential diagnosis, with data collected from <strong>20+ hospitals</strong> at <a href="http://www.healtether.com" target="_blank" rel="noopener">Healtether Health</a>
+        while leading five engineers, then architected
+        <strong>real-time GraphRAG</strong> with contextual updates at <a href="https://maura.ai/" target="_blank" rel="noopener">Maura.ai</a>.</p>
+      <div class="chips"><span>Neo4j</span><span>RAG</span><span>GraphRAG</span><span>FastAPI</span><span>GPT-4o</span></div>
+      <div class="stat">▸ 20+ hospitals · 1 novel clinical graph · 3 RAG systems</div>
+    </div>
+  </div>
+</section>
 
-      <div class="projects-grid">
-        <div class="project-card reveal">
-          <div class="project-type">Publication</div>
-          <h3><a href="https://link.springer.com/chapter/10.1007/978-3-031-24848-1_22" target="_blank" rel="noopener" class="project-link">Impact of Non-Academic Parameters on Academic Performance</a></h3>
-          <p>A Rough Set Theory-based study on how various factors affect student performance.</p>
-          <div class="project-footer">
-            <span class="project-tag">Springer</span>
-            <span class="project-tag">Rough Set Theory</span>
-          </div>
-        </div>
+<!-- ═══════════ L3 · SELF-ATTENTION — transformer year ═══════════ -->
+<section class="layer" id="l3" data-accent="#fbbf24" style="height:230vh">
+  <div class="stage">
+    <div class="viz">
+      <svg id="attn" viewBox="0 0 900 540" fill="none" aria-label="Animated transformer attention diagram">
+        <text class="txs" x="40" y="46">Attention(Q,K,V) = softmax(QKᵀ/√dₖ)·V</text>
+        <g id="a-arcs" fill="none"></g>
+        <g id="a-tokens"></g>
+        <g id="a-heat"></g>
+        <text class="txs" x="668" y="150">attention weights</text>
+        <g id="a-next">
+          <rect x="700" y="428" width="120" height="44" rx="10" stroke="#fbbf24" stroke-width="1.5" fill="rgba(251,191,36,.08)"/>
+          <text class="tsm tacc" x="722" y="455" id="a-nexttxt">listening…</text>
+        </g>
+      </svg>
+    </div>
+    <div class="copy">
+      <div class="eyebrow">Layer 03 · Self-attention — 2025</div>
+      <h2>Teaching machines <em>to listen.</em></h2>
+      <p>Founding AI Lead at <a href="https://www.myvibe.chat/" target="_blank" rel="noopener">Vibe AI</a>. Built a <strong>65,356-record synthetic empathy dataset</strong> with three
+        different LLMs and trained the <strong>world's #15 conversational model on EQBench3</strong> using RLVER
+        for intent based routing, then quantized it until it was fast enough to feel present
+        (TTFT ~200ms). Attention, it turns out, is also all humans need.</p>
+      <div class="chips"><span>Fine-tuning</span><span>EQBench3</span><span>Quantization</span><span>Synthetic data</span><span>vLLM</span></div>
+      <div class="stat">▸ #15 on EQBench3 · 65,356 records · team of 3</div>
+    </div>
+  </div>
+</section>
 
-        <div class="project-card reveal">
-          <div class="project-type">Publication</div>
-          <h3><a href="https://www.igi-global.com/chapter/a-decadal-walk-on-bci-technology/269786" target="_blank" rel="noopener" class="project-link">A Decadal Walk on BCI Technology</a></h3>
-          <p>A comprehensive survey on Brain-Computer Interface technology, covering a decade of advancements and applications.</p>
-          <div class="project-footer">
-            <span class="project-tag">IGI Global</span>
-            <span class="project-tag">BCI</span>
-          </div>
-        </div>
+<!-- ═══════════ L4 · MULTI-AGENT RUNTIME — Sol Foundry ═══════════ -->
+<section class="layer flip" id="l4" data-accent="#34d399" style="height:230vh">
+  <div class="stage">
+    <div class="viz">
+      <svg id="agents" viewBox="0 0 900 540" fill="none" aria-label="Animated multi-agent runtime diagram">
+        <rect id="ag-core" x="330" y="210" width="220" height="120" rx="16" stroke="#34d399" stroke-width="1.5" fill="rgba(52,211,153,.05)"/>
+        <text class="tsm tacc" x="384" y="262">CEREBRO</text>
+        <text class="txs" x="366" y="282">multi-agent runtime</text>
+        <g id="ag-links" stroke="#34d399" stroke-opacity=".3"></g>
+        <g id="ag-nodes"></g>
+        <circle id="ag-msg" cx="30" cy="270" r="6" fill="#e8eaf2"/>
+        <text class="txs" x="16" y="298">msg</text>
+        <g id="ag-distill">
+          <circle id="d-big" cx="758" cy="120" r="46" stroke="#34d399" stroke-opacity=".7" fill="rgba(52,211,153,.06)"/>
+          <text class="txs" x="726" y="116" id="d-biglbl">GPT-5-mini</text>
+          <text class="txs" x="740" y="132" id="d-biglat">2.1 s</text>
+          <rect id="d-small" x="736" y="190" width="46" height="46" rx="9" stroke="#34d399" stroke-width="1.5" fill="rgba(52,211,153,.14)"/>
+          <text class="txs" x="716" y="260" id="d-smalllbl">LFM2.5-1.2B · &lt;200 ms</text>
+          <text class="tsm tacc" x="728" y="278" id="d-x15">~15× cheaper</text>
+          <path id="d-arrow" d="M758 172 L758 184 M752 178 L758 185 L764 178" stroke="#34d399" stroke-width="1.5"/>
+        </g>
+      </svg>
+    </div>
+    <div class="copy">
+      <div class="eyebrow">Layer 04 · Multi-agent runtime — Jan → Apr 2026</div>
+      <h2>One model became <em>many minds.</em></h2>
+      <p>At <a href="https://hellosol.app" target="_blank" rel="noopener">Sol Foundry</a>, architected <strong>Cerebro</strong>: a runtime of <strong>10+ specialized LLM agents</strong>
+        classifying, extracting and enriching every message on the Sol platform, guarded by
+        <strong>27 automated graders</strong> with CI quality gates. Distilled GPT-5-mini into a self-hosted
+        1.2B model with QLoRA: <strong>2.1 s → under 200 ms, ~15× cheaper</strong>. Turning conversations
+        into callouts, in near-realtime.</p>
+      <div class="chips"><span>LangChain</span><span>Cerebras</span><span>QLoRA</span><span>LangSmith</span><span>DistilBERT</span></div>
+      <div class="stat">▸ 10+ agents · 27 graders · 87.2% across 6 languages</div>
+    </div>
+  </div>
+</section>
 
-        <div class="project-card reveal">
-          <div class="project-type">Project</div>
-          <h3><a href="https://github.com/AniLeo-01/CodeExplainer" target="_blank" rel="noopener" class="project-link">CodeExplainer</a></h3>
-          <p>A multi-agent system that indexes, analyzes, and answers questions about codebases from GitHub using knowledge graph and LLM-powered reasoning.</p>
-          <div class="project-footer">
-            <span class="project-tag">Knowledge Graphs</span>
-            <span class="project-tag">Multi-Agent</span>
-          </div>
-        </div>
+<!-- ═══════════ L5 · AGENTIC WEB — WebZero ═══════════ -->
+<section class="layer" id="l5" data-accent="#60a5fa" style="height:240vh">
+  <div class="stage">
+    <div class="viz">
+      <svg id="wz" viewBox="0 0 900 540" fill="none" aria-label="Animated agent readiness diagram">
+        <g id="wz-frame" stroke="#60a5fa" stroke-opacity=".65">
+          <rect x="40" y="80" width="300" height="210" rx="10"/>
+          <line x1="40" y1="116" x2="340" y2="116"/>
+          <circle cx="60" cy="98" r="4"/><circle cx="76" cy="98" r="4"/><circle cx="92" cy="98" r="4"/>
+          <rect x="62" y="140" width="150" height="12" rx="6"/>
+          <rect x="62" y="164" width="256" height="7" rx="3.5"/>
+          <rect x="62" y="180" width="216" height="7" rx="3.5"/>
+          <rect x="62" y="216" width="92" height="26" rx="7"/>
+        </g>
+        <text class="txs" x="40" y="66">any website</text>
+        <g id="wz-edges" stroke="#60a5fa" stroke-opacity=".3"></g>
+        <g id="wz-nodes"></g>
+        <circle id="wz-agent" r="7" cx="190" cy="330" fill="#e8eaf2"/>
+        <g id="wz-gate">
+          <path d="M255 393 l14 8 v16 l-14 8 -14 -8 v-16 z" stroke="#f87171" stroke-width="1.5" fill="rgba(248,113,113,.12)"/>
+          <text class="txs" x="222" y="444" fill="#f87171">captcha wall</text>
+        </g>
+        <g id="wz-gauge">
+          <circle cx="730" cy="200" r="86" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
+          <circle id="wz-arc" cx="730" cy="200" r="86" stroke="#60a5fa" stroke-width="10" stroke-linecap="round"
+            transform="rotate(-90 730 200)" stroke-dasharray="540.35" stroke-dashoffset="540.35"/>
+          <text id="wz-score" x="730" y="196" text-anchor="middle" style="font-size:44px;font-family:var(--font-d)" fill="#e8eaf2">0</text>
+          <text class="txs" x="730" y="222" text-anchor="middle">w0 score</text>
+        </g>
+        <g id="wz-bars"></g>
+      </svg>
+    </div>
+    <div class="copy">
+      <div class="eyebrow">Layer 05 · Agentic infra — Apr 2026 → now</div>
+      <h2>Rebuilding the web for <em>its next users.</em></h2>
+      <p>The internet's newest users aren't human. At <strong><a href="https://webzero.ai" target="_blank" rel="noopener">WebZero</a></strong>, I built and shipped
+        <strong>w0 Score</strong>, the Webzero Agent Readiness Index: can an AI agent discover, understand and
+        safely finish real journeys — sign-up, checkout, support — on your site? A hybrid score across
+        Discovery, Action Surface and Governance, blended with live agent outcomes from
+        <strong>AgentTrek</strong>, proven on a <strong>179-site broker benchmark</strong>. Measuring the
+        web-agent traffic, and building the web-infra for them.</p>
+      <div class="chips"><span>MCP</span><span>A2A</span><span>OpenAPI</span><span>AWS ECS</span><span>LLM judge</span></div>
+      <div class="stat">▸ 179 sites · 6.5× faster evals · 153-value verdict lattice</div>
+      <a class="go" href="https://webzero.ai" target="_blank" rel="noopener">score your site → webzero.ai</a>
+    </div>
+  </div>
+</section>
 
-        <div class="project-card reveal">
-          <div class="project-type">Project</div>
-          <h3><a href="https://github.com/AniLeo-01/DDPM_app" target="_blank" rel="noopener" class="project-link">DDPM App</a></h3>
-          <p>Implementation of Denoising Diffusion Probabilistic Model and diffusion-based image-to-image model from scratch.</p>
-          <div class="project-footer">
-            <span class="project-tag">Diffusion Models</span>
-            <span class="project-tag">Computer Vision</span>
-          </div>
-        </div>
-
-        <div class="project-card reveal">
-          <div class="project-type">Project</div>
-          <h3><a href="https://github.com/AniLeo-01/TicketBot" target="_blank" rel="noopener" class="project-link">TicketBot</a></h3>
-          <p>End-to-end pipeline for analyzing app reviews using LLM-powered topic discovery, clustering, and trend analysis.</p>
-          <div class="project-footer">
-            <span class="project-tag">NLP</span>
-            <span class="project-tag">LLM</span>
-          </div>
-        </div>
-
-        <div class="project-card reveal">
-          <div class="project-type">Project</div>
-          <h3><a href="http://www.github.com/AniLeo-01/dungeonforge" target="_blank" rel="noopener" class="project-link">DungeonForge</a></h3>
-          <p>End-to-end 8-bit RPG dungeon video game builder from prompt using smolagents.</p>
-          <div class="project-footer">
-            <span class="project-tag">smolagents</span>
-            <span class="project-tag">Game Gen</span>
-          </div>
-        </div>
-
-        <div class="project-card reveal">
-          <div class="project-type">Open Source</div>
-          <h3><a href="http://www.cognee.ai" target="_blank" rel="noopener" class="project-link">Cognee Contributor</a></h3>
-          <p>Active open source contributor to Cognee - PRs #1449 and #1333.</p>
-          <div class="project-footer">
-            <span class="project-tag">Open Source</span>
-          </div>
-        </div>
+<!-- ═══════════ L6 · OUTPUT — SocialTokn + CTA ═══════════ -->
+<section class="layer flip" id="l6" data-accent="#fb7185" style="height:240vh">
+  <div class="stage">
+    <div class="viz">
+      <svg id="st" viewBox="0 0 900 540" fill="none" aria-label="Animated AI creator agency diagram">
+        <g id="st-orbit">
+          <circle cx="450" cy="250" r="150" stroke="rgba(251,113,133,.15)" stroke-dasharray="3 7"/>
+        </g>
+        <circle cx="450" cy="250" r="46" stroke="#fb7185" stroke-width="1.5" fill="rgba(251,113,133,.06)"/>
+        <circle cx="450" cy="250" r="30" stroke="rgba(251,113,133,.35)"/>
+        <text class="txs" x="450" y="246" text-anchor="middle">shared</text>
+        <text class="txs" x="450" y="260" text-anchor="middle">state</text>
+        <g id="st-agents"></g>
+        <g id="st-flow" fill="#e8eaf2"></g>
+        <g id="st-pub">
+          <path d="M818 236 l12 14 -12 14 -12 -14 z" stroke="#fb7185" stroke-width="1.5" fill="rgba(251,113,133,.1)"/>
+          <text class="txs" x="792" y="286">human gate</text>
+          <path id="st-sig" d="M830 250 h40" stroke="#fb7185" stroke-opacity=".5"/>
+          <text class="txs" x="836" y="240">publish</text>
+        </g>
+        <text class="txs" x="40" y="46">while true: research → plan → draft → measure</text>
+      </svg>
+    </div>
+    <div class="copy">
+      <div class="eyebrow">Layer 06 · Output — founding</div>
+      <h2>An agency that <em>never sleeps.</em></h2>
+      <p>Founder of <strong><a href="https://socialtokn.com" target="_blank" rel="noopener">SocialTokn</a></strong>: an AI creator agency. A creator sets goals; a flat team of
+        <strong>persistent specialist agents</strong> researches, plans, drafts and measures, continuously,
+        from shared state — escalating only the decisions that matter to a human.
+        The forward pass continues.</p>
+      <div class="chips"><span>Agent runtime</span><span>A2A hand-offs</span><span>Durable tasks</span><span>pgvector</span></div>
+      <div class="cta-row">
+        <a class="btn primary" href="mailto:aniruddha1.2.3.3.2.1@gmail.com">Get in touch</a>
+        <a class="btn" href="https://www.linkedin.com/in/aniruddha-thedatamacgyver/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="https://github.com/AniLeo-01" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="blog.html">Blog</a>
+        <a class="btn" href="Aniruddha_Mandal_Resume.pdf" target="_blank" rel="noopener">Résumé (PDF)</a>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Education -->
-  <section class="section section-alt" id="education">
-    <div class="container">
-      <h2 class="section-title reveal">
-        <span class="section-number">04</span>
-        Education
-      </h2>
+</main>
 
-      <div class="education-card reveal">
-        <div class="education-header">
-          <div>
-            <h3>B.Tech in Computer Science and Engineering</h3>
-            <p class="education-spec">Specialization in Data Analytics</p>
-            <p class="company">The Neotia University, School of Science & Technology <span class="location">· West Bengal, India</span></p>
-          </div>
-          <span class="date">Aug 2019 - Jul 2023</span>
-        </div>
-        <div class="education-highlights">
-          <div class="highlight">
-            <span class="highlight-number" data-count="9.0" data-decimal="1">0</span>
-            <span class="highlight-label">GPA / 10.0</span>
-          </div>
-          <div class="highlight">
-            <span class="highlight-number" data-count="337" data-suffix="th">0</span>
-            <span class="highlight-label">Amazon ML Challenge 2021</span>
-          </div>
-        </div>
-      </div>
+<footer>
+  <span>© 2026 Aniruddha Mandal · Bengaluru, IN</span>
+  <span>one forward pass, no cuts · built with <a href="https://animejs.com" target="_blank" rel="noopener">anime.js</a></span>
+</footer>
 
-      <h3 class="subsection-title reveal">Test Scores</h3>
-      <div class="test-scores reveal">
-        <div class="score-card">
-          <div class="score-name">GRE</div>
-          <div class="score-value" data-count="305">0</div>
-          <div class="score-date">Jan 2025</div>
-        </div>
-        <div class="score-card">
-          <div class="score-name">TOEFL iBT</div>
-          <div class="score-value" data-count="98">0</div>
-          <div class="score-date">Aug 2024</div>
-        </div>
-      </div>
-    </div>
-  </section>
+<script type="module">
+import { animate, createTimeline, stagger, createDrawable, utils }
+  from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm';
 
-  <!-- Contact -->
-  <section class="section" id="contact">
-    <div class="container">
-      <h2 class="section-title reveal">
-        <span class="section-number">05</span>
-        Get In Touch
-      </h2>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a,parent)=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);parent&&parent.appendChild(n);return n};
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const mobile=matchMedia('(max-width: 1020px)').matches;
+// deterministic pseudo-random
+const rnd=i=>((i*2654435761)>>>0)%1000/1000;
 
-      <div class="contact-content reveal">
-        <p class="contact-text">
-          I'm always open to discussing new opportunities, interesting projects,
-          or collaborations in the AI/ML space.
-        </p>
-        <div class="contact-links">
-          <a href="mailto:aniruddha1.2.3.3.2.1@gmail.com" class="contact-item">
-            <span class="contact-icon">&#x2709;</span>
-            <span>aniruddha1.2.3.3.2.1@gmail.com</span>
-          </a>
-          <a href="tel:+916289835880" class="contact-item">
-            <span class="contact-icon">&#x260E;</span>
-            <span>+91 6289835880</span>
-          </a>
-          <a href="http://www.github.com/AniLeo-01" class="contact-item" target="_blank" rel="noopener">
-            <span class="contact-icon">&#x1F4BB;</span>
-            <span>GitHub</span>
-          </a>
-        </div>
-        <div class="contact-location">
-          <span>&#x1F4CD;</span> Bangalore, India
-        </div>
-      </div>
-    </div>
-  </section>
+/* ─────────── build SVG guts ─────────── */
 
-  <!-- Footer -->
-  <footer class="footer">
-    <p>&copy; 2026 Aniruddha Mandal. Built with Claude.</p>
-  </footer>
+// L1 · CNN grids
+{
+  const g=$('#cnn-in'), pat=[0,0,0,1,1,1,1,0,0,0, 0,0,1,1,0,0,1,1,0,0, 0,1,1,0,0,0,0,1,1,0, 0,1,0,0,1,1,0,0,1,0, 1,1,0,1,0,0,1,0,1,1, 1,0,0,1,1,1,1,0,0,1, 1,1,0,1,0,0,1,0,1,1, 0,1,1,0,0,0,0,1,1,0, 0,0,1,1,0,0,1,1,0,0, 0,0,0,1,1,1,1,0,0,0];
+  for(let i=0;i<100;i++){const r=(i/10)|0,c=i%10;
+    el('rect',{class:'cin',x:40+c*28,y:90+r*28,width:24,height:24,rx:2,
+      fill:pat[i]?'rgba(34,211,238,.30)':'rgba(255,255,255,.045)'},g);}
+  const fm=$('#cnn-fm');
+  for(let i=0;i<64;i++){const r=(i/8)|0,c=i%8;
+    el('rect',{class:'cfm',x:410+c*24,y:126+r*24,width:20,height:20,rx:2,
+      fill:`rgba(34,211,238,${(.12+.5*rnd(i)).toFixed(2)})`},fm);}
+  const pl=$('#cnn-pool');
+  for(let i=0;i<16;i++){const r=(i/4)|0,c=i%4;
+    el('rect',{class:'cpl',x:628+c*26,y:166+r*26,width:22,height:22,rx:2,
+      fill:`rgba(34,211,238,${(.2+.55*rnd(i+7)).toFixed(2)})`},pl);}
+}
 
-  <script src="script.js"></script>
+// L2 · graph
+const GN=[[120,120],[250,80],[390,130],[300,220],[160,260],[80,360],[240,370],[420,300],[520,180],[560,340],[440,440],[640,110],[700,250],[330,470],[580,460],[170,450]];
+const GE=[[0,1],[1,2],[2,3],[3,4],[4,0],[4,5],[5,6],[6,3],[3,7],[7,8],[8,2],[8,9],[9,10],[10,7],[9,12],[11,8],[11,12],[12,9],[13,6],[13,10],[14,10],[14,12],[15,5],[15,13]];
+{
+  const ge=$('#g-edges'),gn=$('#g-nodes');
+  GE.forEach(([a,b],i)=>el('line',{class:'gedge',x1:GN[a][0],y1:GN[a][1],x2:GN[b][0],y2:GN[b][1]},ge));
+  GN.forEach(([x,y],i)=>{
+    el('circle',{class:'gnode',cx:x,cy:y,r:7+5*rnd(i),fill:'rgba(167,139,250,.16)',stroke:'#a78bfa','stroke-width':1.2},gn);
+  });
+  const gp=$('#g-pulses');
+  for(let i=0;i<8;i++)el('circle',{class:'gpulse',r:3,cx:0,cy:0,opacity:0},gp);
+  const gb=$('#g-beams');
+  [8,12,9].forEach(t=>el('line',{class:'gbeam',x1:640,y1:452,x2:GN[t][0],y2:GN[t][1],opacity:.85},gb));
+}
+
+// L3 · attention tokens + arcs + heatmap
+const TOK=['i','hear','you','—','tell','me','more'];
+const TX=TOK.map((_,i)=>70+i*78);
+{
+  const g=$('#a-tokens');
+  TOK.forEach((t,i)=>{
+    const grp=el('g',{class:'atok'},g);
+    el('rect',{x:TX[i]-26,y:400,width:52,height:36,rx:9,stroke:'#fbbf24','stroke-opacity':.5,fill:'rgba(251,191,36,.06)'},grp);
+    const tx=el('text',{class:'tsm',x:TX[i],y:423,'text-anchor':'middle',fill:'#e8eaf2'},grp);tx.textContent=t;
+  });
+  const arcs=$('#a-arcs');const pairs=[];
+  for(let i=0;i<7;i++)for(let j=0;j<7;j++)if(i<j&&(i+j)%2===0||j===i+1)pairs.push([i,j]);
+  pairs.slice(0,14).forEach(([i,j],k)=>{
+    const h=60+Math.abs(j-i)*52, mid=(TX[i]+TX[j])/2;
+    el('path',{class:'aarc',d:`M${TX[i]} 396 Q ${mid} ${396-h} ${TX[j]} 396`,
+      stroke:k%2?'#fbbf24':'#f59e0b','stroke-opacity':(.25+.6*rnd(k)).toFixed(2),
+      'stroke-width':(1+2.4*rnd(k+3)).toFixed(1)},arcs);
+  });
+  const hm=$('#a-heat');
+  for(let i=0;i<49;i++){const r=(i/7)|0,c=i%7;
+    el('rect',{class:'aheat',x:668+c*22,y:168+r*22,width:19,height:19,rx:2,
+      fill:`rgba(251,191,36,${(r===c?.75:.08+.5*rnd(i)).toFixed(2)})`},hm);}
+}
+
+// L4 · agent nodes around core
+const AGS=[['classify',215,120],['extract',215,420],['enrich',665,120],['dedup',665,420],['lifecycle',440,80],['eval ×27',440,462]];
+{
+  const gl=$('#ag-links'),gn=$('#ag-nodes');
+  AGS.forEach(([n,x,y],i)=>{
+    el('line',{class:'aglink',x1:x,y1:y,x2:x<330?330:x>550?550:x,y2:y<210?210:y>330?330:y},gl);
+    const grp=el('g',{class:'agnode'},gn);
+    el('circle',{cx:x,cy:y,r:26,stroke:'#34d399','stroke-width':1.3,fill:'rgba(52,211,153,.07)'},grp);
+    const t=el('text',{class:'txs',x:x,y:y+3,'text-anchor':'middle',fill:'#8b90a3'},grp);t.textContent=n;
+  });
+}
+
+// L5 · action graph
+const WN=[['home',400,180],['sign-up',520,120],['checkout',604,192],['support',530,300],['api',430,390]];
+{
+  const we=$('#wz-edges'),wn=$('#wz-nodes');
+  const wedges=[[0,1],[1,2],[0,3],[3,4],[2,3]];
+  wedges.forEach(([a,b])=>el('line',{class:'wedge',x1:WN[a][1],y1:WN[a][2],x2:WN[b][1],y2:WN[b][2]},we));
+  el('line',{class:'wedge',x1:340,y1:230,x2:400,y2:180},we); // site → home
+  WN.forEach(([n,x,y],i)=>{
+    const grp=el('g',{class:'wnode'},wn);
+    el('circle',{cx:x,cy:y,r:17,stroke:'#60a5fa','stroke-width':1.3,fill:'rgba(96,165,250,.08)'},grp);
+    const t=el('text',{class:'txs',x:x,y:y-24,'text-anchor':'middle',fill:'#8b90a3'},grp);t.textContent=n;
+  });
+  const bars=$('#wz-bars'), dims=[['discovery',.82],['action surface',.7],['governance',.62],['agent outcomes',.74]];
+  dims.forEach(([n,v],i)=>{
+    el('rect',{x:640,y:330+i*38,width:180,height:5,rx:2.5,fill:'rgba(255,255,255,.07)'},bars);
+    el('rect',{class:'wbar',x:640,y:330+i*38,width:180*v,height:5,rx:2.5,fill:'#60a5fa','data-w':180*v},bars);
+    const t=el('text',{class:'txs',x:640,y:324+i*38},bars);t.textContent=n;
+  });
+}
+
+// L6 · SocialTokn agents + artifact flow
+{
+  const g=$('#st-agents');
+  [['research',450,100],['strategist',320,325],['growth',580,325]].forEach(([n,x,y])=>{
+    const grp=el('g',{class:'stagent'},g);
+    el('circle',{cx:x,cy:y,r:30,stroke:'#fb7185','stroke-width':1.3,fill:'rgba(251,113,133,.07)'},grp);
+    const t=el('text',{class:'txs',x:x,y:y+3,'text-anchor':'middle',fill:'#8b90a3'},grp);t.textContent=n;
+  });
+  const f=$('#st-flow');
+  for(let i=0;i<4;i++)el('rect',{class:'stcard',x:496,y:242,width:22,height:15,rx:3,
+    fill:'rgba(232,234,242,.85)',opacity:0},f);
+}
+
+/* ─────────── scrubbed timelines ─────────── */
+const D=1000, LIN={ease:'linear'};
+const TL={};
+
+// L0 hero: fade content up & out, viz drifts
+TL.l0=(()=>{const tl=createTimeline({autoplay:false,defaults:LIN});
+  tl.add('.hero-inner',{opacity:[1,0],translateY:[0,-70],duration:400},480)
+    .add('#heroviz',{opacity:[.5,0],translateY:[0,-120],duration:420},460)
+    .add('.scroll-cue',{opacity:[1,0],duration:120},60);
+  return tl;})();
+
+// L1 CNN
+TL.l1=(()=>{const tl=createTimeline({autoplay:false,defaults:LIN});
+  tl.add('#cnn .cin',{opacity:[0,1],duration:120,delay:stagger(1.2)},0)
+    .add('#cnn-out, #cnn-fc, #cnn-pool',{opacity:[0,0],duration:1},0);
+  // kernel sweep: 4 sampled rows × 8 cols
+  const kx=[],ky=[];
+  const rows=[0,2,5,7];for(const r of rows)for(let c=0;c<8;c++){kx.push({to:40+c*28,duration:14});ky.push({to:90+r*28,duration:14});}
+  tl.add('#kernel',{x:kx,y:ky},150)
+    .add('#cnn .cfm',{opacity:[0,1],scale:[.4,1],duration:26,delay:stagger(6.4)},160)
+    .add('#cnn-pool',{opacity:[0,1],duration:60},640)
+    .add('#cnn .cpl',{opacity:[0,1],scale:[.3,1],duration:40,delay:stagger(7)},640)
+    .add('#cnn-fc',{opacity:[0,1],duration:60},780)
+    .add('#cnn-out',{opacity:[0,1],duration:80},820)
+    .add('#c-out1',{opacity:[.4,1],duration:100},880);
+  return tl;})();
+
+// L2 graph: build → message passing → retrieval
+TL.l2=(()=>{const tl=createTimeline({autoplay:false,defaults:LIN});
+  tl.add('#gnn .gnode',{opacity:[0,1],scale:[0,1],duration:60,delay:stagger(9)},0);
+  const edges=createDrawable('#gnn .gedge');
+  tl.add('#gnn .gedge',{opacity:[0,1],duration:8},60)
+    .add(edges,{draw:['0 0','0 1'],duration:200,delay:stagger(5)},60);
+  // message passing pulses along 8 edges
+  $$('#gnn .gpulse').forEach((p,i)=>{
+    const [a,b]=GE[(i*3)%GE.length];
+    tl.add(p,{cx:[GN[a][0],GN[b][0]],cy:[GN[a][1],GN[b][1]],opacity:[0,1,0].map((o,k)=>({to:o,duration:k?55:1})),duration:110},380+i*22);
+  });
+  tl.add('#gnn .gnode',{scale:[1,1.28,1],duration:160,delay:stagger(4)},430)
+    .add('#g-query',{opacity:[0,1],translateY:[24,0],duration:80},640);
+  const beams=createDrawable('#gnn .gbeam');
+  tl.add('#gnn .gbeam',{opacity:[0,.85],duration:8},700)
+    .add(beams,{draw:['0 0','0 1'],duration:110,delay:stagger(26)},700)
+    .add('#g-gen',{opacity:[0,1],duration:70},840)
+    .add('#g-ans',{opacity:[0,1],duration:60},900);
+  return tl;})();
+
+// L3 attention
+TL.l3=(()=>{const tl=createTimeline({autoplay:false,defaults:LIN});
+  tl.add('#attn .atok',{opacity:[0,1],translateY:[26,0],duration:70,delay:stagger(16)},0);
+  const arcs=createDrawable('#attn .aarc');
+  tl.add('#attn .aarc',{opacity:[0,1],duration:8},170)
+    .add(arcs,{draw:['0 0','0 1'],duration:240,delay:stagger(14)},170)
+    .add('#attn .aheat',{opacity:[0,1],duration:30,delay:stagger(5.5)},480)
+    .add('#a-next',{opacity:[0,1],translateY:[18,0],duration:80},840);
+  return tl;})();
+
+// L4 agents
+TL.l4=(()=>{const tl=createTimeline({autoplay:false,defaults:LIN});
+  tl.add('#ag-core',{opacity:[0,1],scale:[.85,1],duration:90},0)
+    .add('#agents .agnode',{opacity:[0,1],scale:[.3,1],duration:80,delay:stagger(22)},80)
+    .add('#agents .aglink',{opacity:[0,1],duration:60,delay:stagger(14)},140);
+  // message hops: in → classify → core → extract → enrich → out
+  const hop=[[30,270],[215,120],[440,270],[215,420],[665,120],[880,270]];
+  tl.add('#ag-msg',{cx:hop.map(h=>({to:h[0],duration:60})),cy:hop.map(h=>({to:h[1],duration:60})),opacity:[0,1]},330);
+  tl.add('#ag-msg',{opacity:[1,0],duration:40},700)
+    .add('#ag-distill',{opacity:[0,1],duration:80},560)
+    .add('#d-big',{scale:[1,.55],opacity:[.9,.35],duration:200},700)
+    .add('#d-small',{opacity:[0,1],scale:[.4,1],duration:160},760)
+    .add('#d-x15',{opacity:[0,1],duration:80},900);
+  return tl;})();
+
+// L5 webzero
+TL.l5=(()=>{const tl=createTimeline({autoplay:false,defaults:LIN});
+  const frame=createDrawable('#wz-frame rect, #wz-frame line');
+  tl.add('#wz-frame circle',{opacity:[0,1],duration:60,delay:stagger(8)},60)
+    .add(frame,{draw:['0 0','0 1'],duration:200,delay:stagger(9)},0);
+  const wedges=createDrawable('#wz .wedge');
+  tl.add('#wz .wnode',{opacity:[0,1],scale:[0,1],duration:60,delay:stagger(16)},200)
+    .add('#wz .wedge',{opacity:[0,1],duration:8},230)
+    .add(wedges,{draw:['0 0','0 1'],duration:140,delay:stagger(12)},230);
+  // agent journey home → sign-up → checkout
+  tl.add('#wz-agent',{
+      cx:[{to:400,duration:60},{to:520,duration:70},{to:604,duration:70}],
+      cy:[{to:180,duration:60},{to:120,duration:70},{to:192,duration:70}],
+      opacity:[0,1],duration:200},430)
+    .add('#wz-gate',{opacity:[0,1,.35,1],duration:160},520);
+  // gauge + bars
+  const score={v:0}, scoreEl=$('#wz-score');
+  tl.add('#wz-gauge',{opacity:[0,1],duration:80},600)
+    .add('#wz-arc',{strokeDashoffset:[540.35,540.35*(1-.74)],duration:260},640)
+    .add(score,{v:74,duration:260,modifier:utils.round(0),onUpdate:()=>scoreEl.textContent=score.v},640)
+    .add('#wz .wbar',{scaleX:[0,1],duration:160,delay:stagger(26)},660);
+  return tl;})();
+
+// L6 socialtokn
+TL.l6=(()=>{const tl=createTimeline({autoplay:false,defaults:LIN});
+  tl.add('#st-orbit',{opacity:[0,1],duration:100},0)
+    .add('#st .stagent',{opacity:[0,1],scale:[.3,1],duration:90,delay:stagger(30)},60)
+    .add('#st-pub',{opacity:[0,1],duration:80},300);
+  $$('#st .stcard').forEach((c,i)=>{
+    tl.add(c,{opacity:[0,1,1,0],translateX:[0,300],translateY:[0,0],duration:180},320+i*90);
+  });
+  tl.add('.cta-row .btn',{opacity:[0,1],translateY:[16,0],duration:60,delay:stagger(12)},520);
+  return tl;})();
+
+/* set initial hidden states for scrubbed groups (timelines don't apply from-values
+   before their start position, so late reveals must start hidden) */
+utils.set('#cnn-fc,#cnn-out,#cnn-pool,#g-query,#g-gen,#g-ans,#a-next,#ag-distill,#wz-gauge,#wz-gate,#st-pub,#st-orbit,'+
+  '#cnn .cfm,#cnn .cpl,#gnn .gnode,#gnn .gedge,#gnn .gbeam,#gnn .gpulse,#attn .atok,#attn .aarc,#attn .aheat,'+
+  '#agents .agnode,#agents .aglink,#ag-msg,#wz .wnode,#wz .wedge,#wz-agent,#st .stagent,.cta-row .btn',{opacity:0});
+
+/* ─────────── scrub loop ─────────── */
+const layers=$$('.layer').map(sec=>({sec,tl:TL[sec.id],cur:0,accent:sec.dataset.accent}));
+const rstops=$$('.rstop'), rfill=$('#rfill'), mbar=$('#mbar'), root=document.documentElement;
+let accentNow=hex(layers[0].accent), accentTgt=accentNow;
+
+function hex(h){return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]}
+function css([r,g,b]){return `rgb(${r|0},${g|0},${b|0})`}
+
+if(rm){
+  layers.forEach(l=>l.tl&&l.tl.seek(l.tl.duration)); // static, fully-revealed page
+}else{
+  const frame=()=>{
+    const vh=innerHeight;let active=0;
+    layers.forEach((l,i)=>{
+      const r=l.sec.getBoundingClientRect();
+      const t=clamp(-r.top/(r.height-vh),0,1);
+      if(r.top<vh*.5&&r.bottom>vh*.5)active=i;
+      l.cur+= (t-l.cur)*0.16;
+      if(Math.abs(t-l.cur)<.0006)l.cur=t;
+      if(l.tl&&l.cur!==l.prev){
+        l.prev=l.cur;
+        l.tl.seek(l.cur*l.tl.duration);
+      }
+    });
+    // rail + accent
+    rstops.forEach((s,i)=>s.classList.toggle('on',i===active));
+    const doc=document.documentElement;
+    const p=doc.scrollTop/(doc.scrollHeight-vh);
+    rfill.style.height=(p*100*.92+4)+'%';
+    mbar.style.transform=`scaleX(${p})`;
+    accentTgt=hex(layers[active].accent);
+    accentNow=accentNow.map((v,k)=>v+(accentTgt[k]-v)*0.07);
+    root.style.setProperty('--accent',css(accentNow));
+    layers[active].sec.style.setProperty('--acc',layers[active].accent);
+    requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+}
+
+/* per-section static accent var (for copy colors before first activation) */
+layers.forEach(l=>l.sec.style.setProperty('--acc',l.accent));
+
+/* ─────────── hero entrance + ambient ─────────── */
+{
+  const h1=$('#hero-title');
+  const frag=document.createDocumentFragment();
+  h1.textContent.split(' ').forEach((word,wi)=>{
+    if(wi){const s=document.createElement('span');s.className='sp';frag.appendChild(s);}
+    const w=document.createElement('span');w.className='wd';
+    [...word].forEach(ch=>{const s=document.createElement('span');s.className='ch';s.textContent=ch;w.appendChild(s)});
+    frag.appendChild(w);
+  });
+  h1.textContent='';h1.appendChild(frag);
+  if(!rm){
+    animate('#hero-title .ch',{opacity:[0,1],translateY:['0.8em',0],rotate:[6,0],
+      delay:stagger(34,{from:'center'}),duration:900,ease:'outExpo'});
+    animate('.hero-eyebrow, .hero-sub, .hero-meta',{opacity:[0,1],translateY:[24,0],
+      delay:stagger(140,{start:500}),duration:800,ease:'outCubic'});
+    // ambient perceptron pulses
+    animate('#hv-pulses .hp',{
+      cx:470,cy:280,opacity:[{to:1,duration:80},{to:0,duration:320}],
+      delay:stagger(190),duration:1400,loop:true,loopDelay:600,ease:'inOutSine'});
+    animate('#hv-node',{scale:[1,1.12,1],duration:1400,loop:true,loopDelay:600,ease:'inOutSine'});
+    animate('#hv-opulse',{cx:[504,1080],opacity:[{to:1,duration:100},{to:0,duration:500}],
+      duration:1400,loop:true,loopDelay:600,ease:'inOutSine',delay:700});
+    const sig=createDrawable('#hv-sig');
+    animate(sig,{draw:['0 0','0 1'],duration:1200,loop:true,loopDelay:800,ease:'inOutQuad'});
+    // L6 ambient orbit
+    animate('#st-orbit circle',{rotate:360,duration:40000,loop:true,ease:'linear'});
+  }
+}
+
+/* ─────────── particle field ─────────── */
+if(!rm){
+  const cv=$('#field'),cx=cv.getContext('2d');
+  let W,H;const N=mobile?26:70;
+  const P=Array.from({length:N},(_,i)=>({x:rnd(i)*1,y:rnd(i+50)*1,s:.3+rnd(i+9)*1.4,v:.00012+rnd(i+31)*.00028}));
+  const size=()=>{W=cv.width=innerWidth*devicePixelRatio;H=cv.height=innerHeight*devicePixelRatio};
+  size();let lastW=innerWidth;
+  addEventListener('resize',()=>{if(Math.abs(innerWidth-lastW)>1){lastW=innerWidth;size()}});
+  const draw=()=>{
+    cx.clearRect(0,0,W,H);
+    const [r,g,b]=accentNow;
+    for(const p of P){
+      p.y-=p.v;if(p.y<0)p.y+=1;
+      const px=p.x*W,py=p.y*H;
+      cx.beginPath();cx.arc(px,py,p.s*devicePixelRatio,0,7);
+      cx.fillStyle=`rgba(${r|0},${g|0},${b|0},${.05+p.s*.09})`;cx.fill();
+    }
+    requestAnimationFrame(draw);
+  };
+  requestAnimationFrame(draw);
+}
+</script>
+<noscript><style>.copy,.hero-inner{opacity:1!important}</style></noscript>
 </body>
 </html>

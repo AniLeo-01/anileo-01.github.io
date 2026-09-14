@@ -1,0 +1,11 @@
+[
+  {
+    "slug": "example-post",
+    "title": "Example post (delete this one)",
+    "date": "2026-09-14",
+    "tags": [
+      "Meta"
+    ],
+    "excerpt": "Markdown lives in blog/slug.md, metadata in posts.json. That's the whole system."
+  }
+]
