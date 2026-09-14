@@ -1,11 +1,13 @@
 [
   {
-    "slug": "example-post",
-    "title": "Example post (delete this one)",
-    "date": "2026-09-14",
+    "slug": "hiring-through-mcp",
+    "title": "Hiring through MCP",
+    "date": "2026-09-15",
     "tags": [
-      "Meta"
+      "MCP",
+      "WebZero",
+      "Hiring"
     ],
-    "excerpt": "Markdown lives in blog/slug.md, metadata in posts.json. That's the whole system."
+    "excerpt": "Candidates apply by pointing their agent at an MCP endpoint. The questions, the clock, and the verdict all live server-side — four hundred lines of dependency-free Node, four breaks, and what still gets through."
   }
 ]
