@@ -13,6 +13,7 @@
 </head>
 <body>
 
+<div id="mbar" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
 <div class="vignette" aria-hidden="true"></div>
 
@@ -43,6 +44,8 @@
 </footer>
 
 <script type="module">
+const mbar=document.getElementById('mbar'),de=document.documentElement;
+addEventListener('scroll',()=>{mbar.style.transform=`scaleX(${de.scrollTop/((de.scrollHeight-innerHeight)||1)})`},{passive:true});
 const ACC=['#22d3ee','#a78bfa','#fbbf24','#34d399','#60a5fa','#fb7185'];
 const fmt=d=>new Date(d+'T00:00:00').toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
 const anim=!matchMedia('(prefers-reduced-motion: reduce)').matches;
