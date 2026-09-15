@@ -5,6 +5,7 @@
   --font-d:'Space Grotesk',sans-serif; --font-b:'Inter',sans-serif; --font-m:'JetBrains Mono',monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:var(--font-b);line-height:1.65;
   -webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::selection{background:var(--accent);color:#06070c}
@@ -16,7 +17,7 @@ a{color:inherit}
 @keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-2%,3%)}50%{transform:translate(3%,-2%)}75%{transform:translate(-3%,-3%)}100%{transform:translate(2%,2%)}}
 .vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
   background:radial-gradient(ellipse 120% 90% at 50% 40%,transparent 55%,rgba(3,4,8,.55) 100%)}
-@media (prefers-reduced-motion:reduce){.grain{animation:none}}
+@media (prefers-reduced-motion:reduce){.grain{animation:none}html{scroll-behavior:auto}}
 
 nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
   padding:20px clamp(20px,4vw,52px)}
@@ -28,6 +29,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:
 .nav-links a{text-decoration:none;color:var(--dim);transition:color .25s}
 .nav-links a:hover,.nav-links a.active{color:var(--ink)}
 @media(max-width:760px){.nav-links{display:none}}
+
+/* scroll progress bar (matches index #mbar; always visible — no rail here) */
+#mbar{position:fixed;top:0;left:0;height:2px;width:100%;z-index:60;transform-origin:0 50%;
+  transform:scaleX(0);background:var(--accent)}
 
 main{position:relative;z-index:2;max-width:760px;margin:0 auto;
   padding:calc(96px + 6vh) clamp(20px,5vw,40px) 60px}
